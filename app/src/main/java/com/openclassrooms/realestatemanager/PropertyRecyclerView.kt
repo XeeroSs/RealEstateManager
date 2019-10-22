@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.openclassrooms.realestatemanager.models.PropertyModel
 import kotlinx.android.synthetic.main.property_cell.view.*
 
-class PropertyRecyclerView(val context: Context, val propertyList: ArrayList<PropertyModel>) : RecyclerView.Adapter<PropertyRecyclerView.PropertyViewHolder>() {
+
+class PropertyRecyclerView(val context: Context, val propertyList: List<PropertyModel>) : RecyclerView.Adapter<PropertyRecyclerView.PropertyViewHolder>() {
 
     // Inflates the item views
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
@@ -15,11 +17,30 @@ class PropertyRecyclerView(val context: Context, val propertyList: ArrayList<Pro
 
     override fun getItemCount() = propertyList.size
 
-    override fun onBindViewHolder(holder: PropertyViewHolder?, position: Int) {
-        holder!!.textViewPriceProperty.text = propertyList[position].priceDollarProperty
+    override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
         holder.textViewNameProperty.text = propertyList[position].addressProperty
+        holder.textViewPriceProperty.text = propertyList[position].priceDollarProperty.toString()
         holder.textViewTypeProperty.text = propertyList[position].typeProperty
-        holder.imageViewProperty.setBackgroundResource(R.drawable.ic_launcher_background)
+        holder.imageViewProperty.setImageResource(R.drawable.ic_launcher_background)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClicked(position: Int, view: View)
+    }
+
+    fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
+        this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
+            override fun onChildViewDetachedFromWindow(view: View?) {
+                view?.setOnClickListener(null)
+            }
+
+            override fun onChildViewAttachedToWindow(view: View?) {
+                view?.setOnClickListener {
+                    val holder = getChildViewHolder(view)
+                    onClickListener.onItemClicked(holder.adapterPosition, view)
+                }
+            }
+        })
     }
 
 
