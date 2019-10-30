@@ -16,9 +16,9 @@ data class PropertyModel(var surfaceProperty: Int,
                          var descriptionProperty: String,
                          var statusProperty: Boolean = false,
                          var dateProperty: String,
-                         var saleDateProperty: String,
+                         var saleDateProperty: String = "Not sold",
                          var realEstateAgentProperty: String
-                         /*var photosProperty: HashMap<String, String>? = null*/) {
+        /*var photosProperty: HashMap<String, String>? = null*/) {
     @PrimaryKey(autoGenerate = true)
     var propertyId: Int? = null
 }

@@ -2,11 +2,10 @@ package com.openclassrooms.realestatemanager.injection
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.openclassrooms.realestatemanager.controller.activity.viewmodel.MainViewModel
+import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.repositories.PropertyDataRepository
 import java.lang.IllegalArgumentException
 import java.util.concurrent.Executor
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
 class ViewModelFactory(private var propertyDataRepository: PropertyDataRepository,

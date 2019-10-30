@@ -91,11 +91,11 @@
 
         <EditText
             android:id="@+id/editText_price_property_management"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:hint="@string/input_text"
+            android:inputType="number"
             android:paddingStart="10dp" />
 
     </LinearLayout>
@@ -125,67 +125,84 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/rooms"
-            android:textSize="18sp" />
+            android:layout_alignParentStart="true">
 
-        <EditText
-            android:id="@+id/editText_rooms_property_management"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/rooms"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editText_rooms_property_management"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:text="0" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginEnd="15dp"
+            android:layout_centerInParent="true">
 
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="0" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/bedrooms"
+                android:textSize="18sp" />
 
-        <TextView
+            <EditText
+                android:id="@+id/editText_bedrooms_property_management"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:text="0" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/bedrooms"
-            android:textSize="18sp" />
+            android:layout_alignParentEnd="true">
 
-        <EditText
-            android:id="@+id/editText_bedrooms_property_management"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="@string/bathrooms"
+                android:textSize="18sp" />
 
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="0" />
+            <EditText
+                android:id="@+id/editText_bathrooms_property_management"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:text="0" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bathrooms"
-            android:layout_marginEnd="15dp"
+        </LinearLayout>
 
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/editText_bathrooms_property_management"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="0" />
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -207,6 +224,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:hint="@string/input_text"
+            android:inputType="number"
             android:paddingStart="10dp" />
 
     </LinearLayout>
@@ -226,7 +244,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editText_surface_property_author"
+            android:id="@+id/editText_author_property_management"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"

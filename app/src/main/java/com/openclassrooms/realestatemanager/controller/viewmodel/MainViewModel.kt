@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.controller.activity.viewmodel
+package com.openclassrooms.realestatemanager.controller.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.models.PropertyModel
