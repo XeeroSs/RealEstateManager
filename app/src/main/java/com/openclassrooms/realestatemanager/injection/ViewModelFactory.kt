@@ -15,6 +15,6 @@ class ViewModelFactory(private var propertyDataRepository: PropertyDataRepositor
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(propertyDataRepository, executor) as T
         }
-        return throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

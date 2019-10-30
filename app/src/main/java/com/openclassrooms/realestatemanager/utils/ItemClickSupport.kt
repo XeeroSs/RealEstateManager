@@ -11,15 +11,15 @@ interface OnItemClickListener {
 
 fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
     this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
-        override fun onChildViewDetachedFromWindow(view: View?) {
-            view?.setOnClickListener(null)
+        override fun onChildViewDetachedFromWindow(view: View) {
+            view.setOnClickListener(null)
         }
 
-        override fun onChildViewAttachedToWindow(view: View?) {
-            view?.setOnClickListener({
+        override fun onChildViewAttachedToWindow(view: View) {
+            view.setOnClickListener {
                 val holder = getChildViewHolder(view)
                 onClickListener.onItemClicked(holder.adapterPosition, view)
-            })
+            }
         }
     })
 }

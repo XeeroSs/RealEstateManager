@@ -27,7 +27,7 @@ class PropertyInfoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        propertyId = arguments.getInt("PROPERTY_ID_BUNDLE")
+        propertyId = arguments!!.getInt("PROPERTY_ID_BUNDLE")
         return inflater.inflate(R.layout.property_info_fragment, container, false)
     }
 
@@ -39,7 +39,7 @@ class PropertyInfoFragment : Fragment() {
 
     private fun getProperty() {
         mainViewModel.getProperty(propertyId).observe(this, Observer { property ->
-            if (property == null) activity.onBackPressed()
+            if (property == null) activity!!.onBackPressed()
             configureUI(property!!)
         })
     }
@@ -62,7 +62,7 @@ class PropertyInfoFragment : Fragment() {
     }
 
     private fun configureViewModel() {
-        val viewModelProvider = Injection.provideViewModelFactory(activity)
+        val viewModelProvider = Injection.provideViewModelFactory(activity!!)
         mainViewModel = ViewModelProviders.of(this, viewModelProvider).get(MainViewModel::class.java)
     }
 }

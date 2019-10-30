@@ -11,8 +11,7 @@ import kotlinx.android.synthetic.main.property_cell.view.*
 
 class PropertyRecyclerView(val context: Context, val propertyList: List<PropertyModel>) : RecyclerView.Adapter<PropertyRecyclerView.PropertyViewHolder>() {
 
-    // Inflates the item views
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             PropertyViewHolder(LayoutInflater.from(context).inflate(R.layout.property_cell, parent, false))
 
     override fun getItemCount() = propertyList.size
@@ -23,26 +22,6 @@ class PropertyRecyclerView(val context: Context, val propertyList: List<Property
         holder.textViewTypeProperty.text = propertyList[position].typeProperty
         holder.imageViewProperty.setImageResource(R.drawable.ic_launcher_background)
     }
-
-    interface OnItemClickListener {
-        fun onItemClicked(position: Int, view: View)
-    }
-
-    fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
-        this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
-            override fun onChildViewDetachedFromWindow(view: View?) {
-                view?.setOnClickListener(null)
-            }
-
-            override fun onChildViewAttachedToWindow(view: View?) {
-                view?.setOnClickListener {
-                    val holder = getChildViewHolder(view)
-                    onClickListener.onItemClicked(holder.adapterPosition, view)
-                }
-            }
-        })
-    }
-
 
     class PropertyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewPriceProperty = itemView.textView_price_property_item!!

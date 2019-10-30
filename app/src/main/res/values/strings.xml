@@ -37,5 +37,7 @@
     <string name="not_available">Not Available</string>
     <string name="available">Available</string>
     <string name="missing_information">Missing information</string>
+    <string name="title_activity_property_management">title_activity_property_management</string>
+    <string name="hello_blank_fragment">coucou</string>
 
 </resources>
