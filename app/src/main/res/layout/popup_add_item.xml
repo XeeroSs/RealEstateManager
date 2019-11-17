@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/popupAddItem_ButtonImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/border_button_rectangle" />
+
+            <EditText
+                android:layout_gravity="center"
+                android:layout_marginStart="14dp"
+                android:id="@+id/popupAddItem_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text_name"
+                android:textSize="14sp"
+                android:maxLength="30"
+                android:maxLines="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/popupAddItem_Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_toStartOf="@+id/popupAddItem_Add"
+            android:text="@string/cancel"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/popupAddItem_Add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:text="@string/add"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

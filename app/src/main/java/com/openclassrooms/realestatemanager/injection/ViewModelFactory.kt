@@ -1,7 +1,7 @@
 package com.openclassrooms.realestatemanager.injection
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.repositories.PropertyDataRepository
 import java.lang.IllegalArgumentException

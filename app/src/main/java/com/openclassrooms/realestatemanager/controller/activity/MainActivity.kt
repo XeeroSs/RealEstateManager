@@ -1,12 +1,12 @@
 package com.openclassrooms.realestatemanager.controller.activity
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
-import com.openclassrooms.realestatemanager.PropertyRecyclerView
+import com.openclassrooms.realestatemanager.adapter.PropertyRecyclerView
 import com.openclassrooms.realestatemanager.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
@@ -43,7 +43,7 @@ class MainActivity : BaseActivity() {
 
     private fun launchPropertyDetails(position: Int) {
         if (propertiesList.size > position) {
-            var intent = Intent(this, PropertyActivity::class.java)
+            var intent = Intent(this, PropertyDetailsActivity::class.java)
             intent.putExtra(PROPERTY_ID, propertiesList[position].propertyId)
             startActivity(intent)
         }

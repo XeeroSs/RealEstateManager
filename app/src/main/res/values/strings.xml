@@ -22,7 +22,7 @@
     <string name="rooms">Rooms</string>
     <string name="bedrooms">Bedrooms</string>
     <string name="bathrooms">Bathrooms</string>
-    <string name="surface">Surface</string>
+    <string name="surface">Surface (m²)</string>
     <string name="author">Author</string>
     <string name="type_property">Type:</string>
     <string name="price_property">Price:</string>
@@ -39,5 +39,10 @@
     <string name="missing_information">Missing information</string>
     <string name="title_activity_property_management">title_activity_property_management</string>
     <string name="hello_blank_fragment">coucou</string>
+    <string name="message_error">An error has occurred, please try again</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add">ADD</string>
+    <string name="text_name">Image name</string>
+    <string name="save_property">You have saved a new property.</string>
 
 </resources>

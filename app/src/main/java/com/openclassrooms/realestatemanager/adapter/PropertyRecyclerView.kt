@@ -1,10 +1,11 @@
-package com.openclassrooms.realestatemanager
+package com.openclassrooms.realestatemanager.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import kotlinx.android.synthetic.main.property_cell.view.*
 

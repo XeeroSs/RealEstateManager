@@ -1,8 +1,11 @@
 package com.openclassrooms.realestatemanager.models
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import org.json.JSONArray
+import java.net.URI
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 @Entity
@@ -17,8 +20,19 @@ data class PropertyModel(var surfaceProperty: Int,
                          var statusProperty: Boolean = false,
                          var dateProperty: String,
                          var saleDateProperty: String = "Not sold",
-                         var realEstateAgentProperty: String
-        /*var photosProperty: HashMap<String, String>? = null*/) {
-    @PrimaryKey(autoGenerate = true)
-    var propertyId: Int? = null
+                         var realEstateAgentProperty: String,
+                         @PrimaryKey var propertyId: String = "",
+                         var photosPropertyJSON: String = "") {
+    constructor() : this(0,
+            "",
+            "",
+            0,
+            0,
+            0,
+            0,
+            "",
+            false,
+            "",
+            "",
+            "")
 }
