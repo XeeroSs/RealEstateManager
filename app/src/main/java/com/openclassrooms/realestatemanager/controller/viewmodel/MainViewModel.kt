@@ -26,16 +26,32 @@ class MainViewModel(var propertyDataRepository: PropertyDataRepository,
         return propertyDataRepository.getProperty(propertyId)
     }
 
-    fun getProperties(): LiveData<List<PropertyModel>> {
-        databaseInstance.get().addOnCompleteListener { task ->
-            for (document: DocumentSnapshot in task.result!!) {
-                listProperties.add(document.toObject(PropertyModel::class.java)!!)
-            }
-            listPropertiesLiveData.postValue(listProperties)
-        }.addOnFailureListener {
-            listPropertiesLiveData = propertyDataRepository.getProperties() as MutableLiveData<List<PropertyModel>>
+    /* fun getProperties(): LiveData<List<PropertyModel>> {
+         databaseInstance.get().addOnCompleteListener { task ->
+             for (document: DocumentSnapshot in task.result!!) {
+                 listProperties.add(document.toObject(PropertyModel::class.java)!!)
+             }
+             listPropertiesLiveData.postValue(listProperties)
+         }.addOnFailureListener {
+             listPropertiesLiveData = propertyDataRepository.getProperties() as MutableLiveData<List<PropertyModel>>
+         }
+         return propertyDataRepository.getProperties()
+     }*/
+
+    fun getProperties(context: Context): LiveData<List<PropertyModel>> {
+
+        val listPropertiesLiveData = propertyDataRepository.getProperties()
+        if (listPropertiesLiveData.value != null) {
+            for (property in listPropertiesLiveData.value!!.iterator())
+                createProperty(property, context)
         }
-        return propertyDataRepository.getProperties()
+
+        databaseInstance.get().addOnCompleteListener { task ->
+            for (document: DocumentSnapshot in task.result!!)
+                listProperties.add(document.toObject(PropertyModel::class.java)!!)
+            this.listPropertiesLiveData.postValue(listProperties)
+        }
+        return if (this.listPropertiesLiveData.value != null) this.listPropertiesLiveData else listPropertiesLiveData
     }
 
     fun createProperty(propertyModel: PropertyModel, context: Context) = executor.execute {

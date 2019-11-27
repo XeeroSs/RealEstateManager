@@ -44,5 +44,9 @@
     <string name="add">ADD</string>
     <string name="text_name">Image name</string>
     <string name="save_property">You have saved a new property.</string>
+    <string name="city">City</string>
+    <string name="zip_code">ZIP Code</string>
+    <string name="add_address">Add. address</string>
+    <string name="location_not_found">Location not found, please check address information (address, add. address, ZIP code and city)</string>
 
 </resources>

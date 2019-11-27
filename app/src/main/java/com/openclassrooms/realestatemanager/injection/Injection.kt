@@ -12,12 +12,9 @@ class Injection {
             return PropertyDataRepository(database!!.propertyDao())
         }
 
-        fun provideExecutor() = Executors.newSingleThreadExecutor()
-
         fun provideViewModelFactory(context: Context): ViewModelFactory {
             val dataSourceProperty = providePropertyDataSource(context)
-            val executor = provideExecutor()
-            return ViewModelFactory(dataSourceProperty, executor)
+            return ViewModelFactory(dataSourceProperty, Executors.newSingleThreadExecutor())
         }
     }
 }

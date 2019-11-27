@@ -11,12 +11,15 @@ import com.openclassrooms.realestatemanager.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.controller.fragment.PropertyDetailsFragment
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.utils.OnItemClickListener
 import com.openclassrooms.realestatemanager.utils.PROPERTY_ID
 import com.openclassrooms.realestatemanager.utils.addOnItemClickListener
+import kotlinx.android.synthetic.main.property_details_content.*
+import kotlinx.android.synthetic.main.property_details_content.view.*
 
 
 class MainActivity : BaseActivity() {
@@ -24,6 +27,7 @@ class MainActivity : BaseActivity() {
     lateinit var adapter: PropertyRecyclerView
     var propertiesList = ArrayList<PropertyModel>()
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var parentActivity: MainActivity
 
     override fun getLayoutId() = R.layout.activity_main
 
@@ -36,12 +40,25 @@ class MainActivity : BaseActivity() {
 
         recyclerViewMain.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
-                launchPropertyDetails(position)
+                if (activity_details_content == null) launchPropertyDetailsActivity(position)
+                else launchPropertyDetailsFragment(position)
             }
         })
     }
 
-    private fun launchPropertyDetails(position: Int) {
+    private fun launchPropertyDetailsFragment(position: Int) {
+        if (propertiesList.size > position) {
+            val fragment = PropertyDetailsFragment().apply {
+                arguments = Bundle().apply { putString(PROPERTY_ID, propertiesList[position].propertyId) }
+            }
+            parentActivity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.activity_details_content, fragment)
+                    .commit()
+        }
+    }
+
+    private fun launchPropertyDetailsActivity(position: Int) {
         if (propertiesList.size > position) {
             var intent = Intent(this, PropertyDetailsActivity::class.java)
             intent.putExtra(PROPERTY_ID, propertiesList[position].propertyId)
@@ -57,7 +74,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun getProperties() {
-        mainViewModel.getProperties().observe(this, Observer { properties ->
+        mainViewModel.getProperties(this).observe(this, Observer { properties ->
             if (properties != null) {
                 propertiesList.clear()
                 propertiesList.addAll(properties)

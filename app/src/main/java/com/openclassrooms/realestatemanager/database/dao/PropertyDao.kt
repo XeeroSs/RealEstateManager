@@ -1,10 +1,7 @@
 package com.openclassrooms.realestatemanager.database.dao
 
-import androidx.room.Dao
-import androidx.room.Update
 import androidx.lifecycle.LiveData
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.openclassrooms.realestatemanager.models.PropertyModel
 
 
@@ -17,7 +14,7 @@ interface PropertyDao {
     @Query("SELECT * FROM PropertyModel")
     fun getProperties(): LiveData<List<PropertyModel>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertProperty(item: PropertyModel)
 
     @Update

@@ -1,11 +1,15 @@
 package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.net.wifi.WifiManager
+import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
 import java.util.Date
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.lang.Exception
 
 
 /**
@@ -14,12 +18,28 @@ import com.google.gson.reflect.TypeToken
 
 object Utils {
 
+    fun getLatLngFromAddress(address: String, context: Context): LatLng? {
+        val coder = Geocoder(context)
+        val listAddress: List<Address>
+        var point: LatLng? = null
+
+        try {
+            listAddress = coder.getFromLocationName(address, 5)
+            if (listAddress == null) return null
+            point = LatLng(listAddress[0].latitude, listAddress[0].longitude)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return point
+    }
+
     // Convertit une ArrayList en objet JSON pour mieux le manipulé dans SQLite
-    fun serializeArrayList(imagesList: ArrayList<HashMap<String, String>>) = Gson().toJson(imagesList)
+    fun serializeArrayList(imagesList: ArrayList<LinkedHashMap<String, String>>) = Gson().toJson(imagesList)
 
     // Convertit un objet JSON en ArrayList depuis SQLite
-    fun deserializeArrayList(stringJSON: String): ArrayList<HashMap<String, String>> {
-        val type = object : TypeToken<ArrayList<HashMap<String, String>>>() {}.type
+    fun deserializeArrayList(stringJSON: String): ArrayList<LinkedHashMap<String, String>> {
+        val type = object : TypeToken<ArrayList<LinkedHashMap<String, String>>>() {}.type
         return Gson().fromJson(stringJSON, type)
     }
 
@@ -42,6 +62,10 @@ object Utils {
      */
     fun convertDollarToEuro(dollars: Int): Int {
         return Math.round(dollars * 0.812).toInt()
+    }
+
+    fun convertEuroToDollar(euros: Int): Int {
+        return Math.round(euros / 0.812).toInt()
     }
 
     /**
