@@ -5,9 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.main_toolbar.*
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.controller.activity.PropertyManagementActivity
+import com.openclassrooms.realestatemanager.controller.activity.PropertySearchActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -34,11 +35,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
-            R.id.action_toolbar_management -> {
-                startActivity(Intent(this,
-                        PropertyManagementActivity::class.java))
-                return true
-            }
             R.id.action_toolbar_add -> {
                 startActivity(Intent(this,
                         PropertyManagementActivity::class.java))
@@ -46,7 +42,7 @@ abstract class BaseActivity : AppCompatActivity() {
             }
             R.id.action_toolbar_search -> {
                 startActivity(Intent(this,
-                        PropertyManagementActivity::class.java))
+                        PropertySearchActivity::class.java))
                 return true
             }
         }

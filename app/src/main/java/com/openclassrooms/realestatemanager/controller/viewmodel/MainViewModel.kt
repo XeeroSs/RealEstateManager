@@ -26,32 +26,15 @@ class MainViewModel(var propertyDataRepository: PropertyDataRepository,
         return propertyDataRepository.getProperty(propertyId)
     }
 
-    /* fun getProperties(): LiveData<List<PropertyModel>> {
-         databaseInstance.get().addOnCompleteListener { task ->
-             for (document: DocumentSnapshot in task.result!!) {
-                 listProperties.add(document.toObject(PropertyModel::class.java)!!)
-             }
-             listPropertiesLiveData.postValue(listProperties)
-         }.addOnFailureListener {
-             listPropertiesLiveData = propertyDataRepository.getProperties() as MutableLiveData<List<PropertyModel>>
-         }
-         return propertyDataRepository.getProperties()
-     }*/
-
     fun getProperties(context: Context): LiveData<List<PropertyModel>> {
-
-        val listPropertiesLiveData = propertyDataRepository.getProperties()
-        if (listPropertiesLiveData.value != null) {
-            for (property in listPropertiesLiveData.value!!.iterator())
-                createProperty(property, context)
-        }
 
         databaseInstance.get().addOnCompleteListener { task ->
             for (document: DocumentSnapshot in task.result!!)
-                listProperties.add(document.toObject(PropertyModel::class.java)!!)
-            this.listPropertiesLiveData.postValue(listProperties)
+                propertyDataRepository.createProperty(document.toObject(PropertyModel::class.java)!!,
+                        document.toObject(PropertyModel::class.java)!!.propertyId)
         }
-        return if (this.listPropertiesLiveData.value != null) this.listPropertiesLiveData else listPropertiesLiveData
+
+        return propertyDataRepository.getProperties()
     }
 
     fun createProperty(propertyModel: PropertyModel, context: Context) = executor.execute {
@@ -66,7 +49,9 @@ class MainViewModel(var propertyDataRepository: PropertyDataRepository,
 
     fun updateProperty(id: String, propertyModel: PropertyModel, context: Context) = executor.execute {
         databaseInstance.document(id).set(propertyModel).addOnCompleteListener {
-            propertyDataRepository.updateProperty(propertyModel)
+            executor.execute {
+                propertyDataRepository.updateProperty(propertyModel)
+            }
         }.addOnFailureListener {
             Toast.makeText(context, context.getString(R.string.message_error), Toast.LENGTH_SHORT).show()
         }

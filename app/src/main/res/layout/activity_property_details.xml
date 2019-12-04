@@ -5,8 +5,8 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        android:id="@+id/management_toolbar"
+        layout="@layout/main_toolbar" />
 
     <include layout="@layout/property_details_content" />
 

@@ -48,5 +48,7 @@
     <string name="zip_code">ZIP Code</string>
     <string name="add_address">Add. address</string>
     <string name="location_not_found">Location not found, please check address information (address, add. address, ZIP code and city)</string>
+    <string name="address_details">address: </string>
+    <string name="input_text_optional">Input text (Optional)</string>
 
 </resources>

@@ -48,7 +48,6 @@ class PropertyManagementActivity : BaseActivity() {
 
     private fun checkInformation() {
         if (editText_address_property_management.text.trim().isEmpty() ||
-                editText_addaddress_property_management.text.trim().isEmpty() ||
                 editText_zipcode_property_management.text.trim().isEmpty() ||
                 editText_city_property_management.text.trim().isEmpty() ||
                 editText_bathrooms_property_management.text.trim().isEmpty() ||
@@ -63,8 +62,8 @@ class PropertyManagementActivity : BaseActivity() {
             return
         }
         if (Utils.getLatLngFromAddress("${editText_address_property_management.text}, " +
-                        "${editText_addaddress_property_management.text}, " +
-                        "${editText_zipcode_property_management.toString().toInt()} " +
+                        "${editText_addaddress_property_management.text} " +
+                        "${editText_zipcode_property_management.text.toString().toInt()} " +
                         "${editText_city_property_management.text}"
                         , this) == null) {
             Toast.makeText(this, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
