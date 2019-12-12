@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".controller.activity.SettingsSearchActivity">
+
+    <include
+        android:id="@+id/toolbar_settings"
+        layout="@layout/main_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_seekbar_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/price_in_dollars_0_at_500000000"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/price_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:bar_color="#8990C4"
+                    app:bar_highlight_color="#2434AD"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:gap="50000"
+                    app:left_thumb_color="#1A246D"
+                    app:left_thumb_color_pressed="#030B47"
+                    app:max_value="5000000"
+                    app:min_value="0"
+                    app:right_thumb_color="#1A246D"
+                    app:right_thumb_color_pressed="#030B47"
+                    app:steps="50000" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_seekbar_surface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/surface_in_m_0_at_5000"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/surface_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    app:bar_color="#8990C4"
+                    app:bar_highlight_color="#2434AD"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:gap="50"
+                    app:left_thumb_color="#1A246D"
+                    app:left_thumb_color_pressed="#030B47"
+                    app:max_value="5000"
+                    app:min_value="0"
+                    app:right_thumb_color="#1A246D"
+                    app:right_thumb_color_pressed="#030B47"
+                    app:steps="50" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_seekbar_room"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/room_0_100"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/room_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:bar_color="#8990C4"
+                    app:bar_highlight_color="#2434AD"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:left_thumb_color="#1A246D"
+                    app:left_thumb_color_pressed="#030B47"
+                    app:max_value="100"
+                    app:min_value="0"
+                    app:right_thumb_color="#1A246D"
+                    app:right_thumb_color_pressed="#030B47" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_seekbar_bedroom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/bedroom_0_100"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/bedroom_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:bar_color="#8990C4"
+                    app:bar_highlight_color="#2434AD"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:left_thumb_color="#1A246D"
+                    app:left_thumb_color_pressed="#030B47"
+                    app:max_value="100"
+                    app:min_value="0"
+                    app:right_thumb_color="#1A246D"
+                    app:right_thumb_color_pressed="#030B47" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_seekbar_bathroom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/bathroom_0_100"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/bathroom_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:bar_color="#8990C4"
+                    app:bar_highlight_color="#2434AD"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:left_thumb_color="#1A246D"
+                    app:left_thumb_color_pressed="#030B47"
+                    app:max_value="100"
+                    app:min_value="0"
+                    app:right_thumb_color="#1A246D"
+                    app:right_thumb_color_pressed="#030B47" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/available"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/available_spinner_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_search_settings_property"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/search" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

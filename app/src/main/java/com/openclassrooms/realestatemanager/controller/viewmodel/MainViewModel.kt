@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.controller.viewmodel
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,20 +28,20 @@ class MainViewModel(var propertyDataRepository: PropertyDataRepository,
     }
 
     fun getProperties(context: Context): LiveData<List<PropertyModel>> {
-
         databaseInstance.get().addOnCompleteListener { task ->
-            for (document: DocumentSnapshot in task.result!!)
+            for (document: DocumentSnapshot in task.result!!.documents) {
                 propertyDataRepository.createProperty(document.toObject(PropertyModel::class.java)!!,
-                        document.toObject(PropertyModel::class.java)!!.propertyId)
+                        document.id)
+            }
         }
-
         return propertyDataRepository.getProperties()
     }
 
     fun createProperty(propertyModel: PropertyModel, context: Context) = executor.execute {
         databaseInstance.add(propertyModel).addOnCompleteListener {
             executor.execute {
-                propertyDataRepository.createProperty(propertyModel, it.result!!.id)
+                val id = it.result!!.id
+                propertyDataRepository.createProperty(propertyModel, id)
             }
         }.addOnFailureListener {
             Toast.makeText(context, context.getString(R.string.message_error), Toast.LENGTH_SHORT).show()

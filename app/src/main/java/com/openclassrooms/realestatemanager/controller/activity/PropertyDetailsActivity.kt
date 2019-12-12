@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.controller.activity
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -21,8 +23,10 @@ import com.openclassrooms.realestatemanager.utils.PROPERTY_ID
 import com.openclassrooms.realestatemanager.utils.PROPERTY_UPDATE
 import com.openclassrooms.realestatemanager.utils.Utils
 import kotlinx.android.synthetic.main.activity_property_details.*
-import kotlinx.android.synthetic.main.activity_property_management.*
 import kotlinx.android.synthetic.main.property_details_content.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+
 
 class PropertyDetailsActivity : BaseActivity(), OnMapReadyCallback {
 
@@ -72,9 +76,13 @@ class PropertyDetailsActivity : BaseActivity(), OnMapReadyCallback {
     private fun configureMap(property: PropertyModel) {
         if (!::map.isInitialized) return
         with(map) {
-            val address = Utils.getLatLngFromAddress(property.addressProperty, this@PropertyDetailsActivity)
-            moveCamera(CameraUpdateFactory.newLatLngZoom(address, 15f))
-            addMarker(MarkerOptions().position(address!!))
+            val address = Utils.getLatLngFromAddress(property.cityProperty +
+                    property.zipCodeProperty.toString().toInt() +
+                    property.addressProperty, this@PropertyDetailsActivity)
+            if (address != null) {
+                moveCamera(CameraUpdateFactory.newLatLngZoom(address, 15f))
+                addMarker(MarkerOptions().position(address))
+            }
             mapType = GoogleMap.MAP_TYPE_NORMAL
         }
 
@@ -99,6 +107,16 @@ class PropertyDetailsActivity : BaseActivity(), OnMapReadyCallback {
         })
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        configureRecyclerView(property.photosPropertyJSON)
+    }
+
     private fun configureUI() {
         fun textViewCapacity(textView: TextView, text: String) {
             textView.text = "${textView.text} $text"
@@ -118,12 +136,23 @@ class PropertyDetailsActivity : BaseActivity(), OnMapReadyCallback {
 
         if (map != null) configureMap(property)
         configureRecyclerView(property.photosPropertyJSON)
+        //loadPhotos()
     }
 
+    private fun loadPhotos() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        startActivityForResult(intent, 42)
+    }
+
+    @AfterPermissionGranted(122)
     private fun configureRecyclerView(photosPropertyJSON: String) {
-        recyclerView_photos_property_fragment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        adapter = PropertyImageRecyclerView(this, Utils.deserializeArrayList(photosPropertyJSON))
-        recyclerView_photos_property_fragment.adapter = adapter
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            recyclerView_photos_property_fragment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            adapter = PropertyImageRecyclerView(this, Utils.deserializeArrayList(photosPropertyJSON))
+            recyclerView_photos_property_fragment.adapter = adapter
+        }
     }
 
     private fun configureViewModel() {

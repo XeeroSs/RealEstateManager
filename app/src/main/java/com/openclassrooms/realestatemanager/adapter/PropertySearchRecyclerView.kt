@@ -37,7 +37,13 @@ class PropertySearchRecyclerView(val context: Context,
             if (constraint == null || constraint.isEmpty()) filteredList.addAll(propertyListFull) else {
                 val filterPattern = constraint.toString().toLowerCase().trim { it <= ' ' }
                 for (item in propertyListFull)
-                    if (item.addressProperty.toLowerCase().contains(filterPattern)) filteredList.add(item)
+                    if (item.addressProperty.toLowerCase().contains(filterPattern) ||
+                            item.descriptionProperty.toLowerCase().contains(filterPattern) ||
+                            item.cityProperty.toLowerCase().contains(filterPattern) ||
+                            item.addAddressProperty.toLowerCase().contains(filterPattern) ||
+                            item.realEstateAgentProperty.toLowerCase().contains(filterPattern) ||
+                            item.zipCodeProperty.toString().toLowerCase().contains(filterPattern) ||
+                            item.typeProperty.toLowerCase().contains(filterPattern)) filteredList.add(item)
             }
             val results = FilterResults()
             results.values = filteredList

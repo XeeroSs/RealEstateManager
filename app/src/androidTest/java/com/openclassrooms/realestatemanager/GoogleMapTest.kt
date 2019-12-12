@@ -35,7 +35,7 @@ class GoogleMapTest {
 
     @Test
     @Throws(Exception::class)
-    fun initDb() {
+    fun startTest() {
         val searchBredaLatLng = getLatLngFromAddress(bredaAddress, InstrumentationRegistry.getInstrumentation().context)
         Assert.assertEquals(searchBredaLatLng!!.latitude, bredaLocationLatlng.latitude, 0.0000001)
         Assert.assertEquals(searchBredaLatLng.longitude, bredaLocationLatlng.longitude, 0.0000001)

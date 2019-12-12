@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.repositories
 
+import android.util.Log
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao
 import com.openclassrooms.realestatemanager.models.PropertyModel
 

@@ -8,6 +8,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.main_toolbar.*
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.controller.activity.PropertyManagementActivity
+import com.openclassrooms.realestatemanager.controller.activity.PropertyMapActivity
 import com.openclassrooms.realestatemanager.controller.activity.PropertySearchActivity
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -35,7 +36,11 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
-            R.id.action_toolbar_add -> {
+            R.id.action_toolbar_map -> {
+                startActivity(Intent(this,
+                        PropertyMapActivity::class.java))
+                return true
+            }           R.id.action_toolbar_add -> {
                 startActivity(Intent(this,
                         PropertyManagementActivity::class.java))
                 return true

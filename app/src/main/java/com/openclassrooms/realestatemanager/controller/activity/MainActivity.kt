@@ -60,7 +60,7 @@ class MainActivity : BaseActivity() {
 
     private fun launchPropertyDetailsActivity(position: Int) {
         if (propertiesList.size > position) {
-            var intent = Intent(this, PropertyDetailsActivity::class.java)
+            val intent = Intent(this, PropertyDetailsActivity::class.java)
             intent.putExtra(PROPERTY_ID, propertiesList[position].propertyId)
             startActivity(intent)
         }

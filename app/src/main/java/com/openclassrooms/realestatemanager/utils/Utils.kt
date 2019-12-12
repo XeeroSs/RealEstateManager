@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.utils
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
@@ -10,6 +11,7 @@ import java.util.Date
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.Exception
+import kotlin.math.roundToInt
 
 
 /**
@@ -50,23 +52,26 @@ object Utils {
      */
     val todayDate: String
         get() {
-            val dateFormat = SimpleDateFormat("yyyy/MM/dd")
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
             return dateFormat.format(Date())
         }
 
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-     * @param dollars
+     * @param money
      * @return
      */
-    fun convertDollarToEuro(dollars: Int): Int {
-        return Math.round(dollars * 0.812).toInt()
-    }
+    fun convertDollarToEuro(dollars: Int) = (dollars * 0.812).roundToInt()
 
-    fun convertEuroToDollar(euros: Int): Int {
-        return Math.round(euros / 0.812).toInt()
-    }
+
+    fun convertEuroToDollar(euros: Int) = (euros / 0.812).roundToInt()
+
+
+    /*fun convertMoney(money: Int, isDollar: Boolean) =
+            if (isDollar) (money * 0.812).roundToInt() else
+                (money / 0.812).roundToInt()*/
+
 
     /**
      * Vérification de la connexion réseau
@@ -75,7 +80,7 @@ object Utils {
      * @return
      */
     fun isInternetAvailable(context: Context): Boolean {
-        val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        return wifi.isWifiEnabled
+        val network = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return network.activeNetworkInfo != null && network.activeNetworkInfo.isConnected
     }
 }
