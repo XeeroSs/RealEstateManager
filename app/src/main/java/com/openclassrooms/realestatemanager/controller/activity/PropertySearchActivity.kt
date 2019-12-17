@@ -104,7 +104,7 @@ class PropertySearchActivity : AppCompatActivity(), SearchView.OnQueryTextListen
     }
 
     private fun getProperties() {
-        mainViewModel.getProperties(this).observe(this, Observer { properties ->
+        mainViewModel.getProperties().observe(this, Observer { properties ->
             if (properties != null) {
                 propertiesList.clear()
                 propertiesList.addAll(properties)
@@ -124,7 +124,7 @@ class PropertySearchActivity : AppCompatActivity(), SearchView.OnQueryTextListen
                               minBathroom: Int,
                               maxBathroom: Int,
                               available: Boolean?) {
-        mainViewModel.getProperties(this).observe(this, Observer { properties ->
+        mainViewModel.getProperties().observe(this, Observer { properties ->
             if (properties != null) {
                 propertiesList.clear()
                 for (property in properties) {

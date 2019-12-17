@@ -60,7 +60,7 @@ class PropertyMapActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener
     }
 
     private fun getProperties() {
-        mainViewModel.getProperties(this).observe(this, Observer { properties ->
+        mainViewModel.getProperties().observe(this, Observer { properties ->
             if (properties != null) {
                 for (property in properties) {
                     if (Utils.getLatLngFromAddress(property.cityProperty +

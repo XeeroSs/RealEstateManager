@@ -40,7 +40,8 @@ abstract class BaseActivity : AppCompatActivity() {
                 startActivity(Intent(this,
                         PropertyMapActivity::class.java))
                 return true
-            }           R.id.action_toolbar_add -> {
+            }
+            R.id.action_toolbar_add -> {
                 startActivity(Intent(this,
                         PropertyManagementActivity::class.java))
                 return true

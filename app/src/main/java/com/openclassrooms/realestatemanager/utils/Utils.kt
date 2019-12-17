@@ -1,16 +1,17 @@
 package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.net.ConnectivityManager
-import android.net.wifi.WifiManager
 import com.google.android.gms.maps.model.LatLng
-import java.text.SimpleDateFormat
-import java.util.Date
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.lang.Exception
+import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -37,13 +38,21 @@ object Utils {
     }
 
     // Convertit une ArrayList en objet JSON pour mieux le manipulé dans SQLite
-    fun serializeArrayList(imagesList: ArrayList<LinkedHashMap<String, String>>) = Gson().toJson(imagesList)
+    fun serializeArrayList(imagesList: ArrayList<LinkedHashMap<Bitmap, String>>) = Gson().toJson(imagesList)
 
     // Convertit un objet JSON en ArrayList depuis SQLite
-    fun deserializeArrayList(stringJSON: String): ArrayList<LinkedHashMap<String, String>> {
-        val type = object : TypeToken<ArrayList<LinkedHashMap<String, String>>>() {}.type
-        return Gson().fromJson(stringJSON, type)
+    fun deserializeArrayList(stringJSON: String): ArrayList<LinkedHashMap<Bitmap, String>> {
+        val type = object : TypeToken<ArrayList<LinkedHashMap<Bitmap, String>>>() {}.type
+        return Gson().fromJson<ArrayList<LinkedHashMap<Bitmap, String>>>(stringJSON, type)
     }
+
+    fun getBytes(bitmap: Bitmap): ByteArray {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream)
+        return stream.toByteArray()
+    }
+
+    fun getImage(image: ByteArray) = BitmapFactory.decodeByteArray(image, 0, image.size)
 
     /**
      * Conversion de la date d'aujourd'hui en un format plus approprié

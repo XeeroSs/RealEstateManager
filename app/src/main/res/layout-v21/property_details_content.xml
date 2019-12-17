@@ -20,22 +20,48 @@
                 android:id="@+id/recyclerView_photos_property_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/colorGrey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="@string/description"
+                android:textColor="@color/colorBlack" />
 
             <TextView
                 android:id="@+id/textView_description_property_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
+                android:elevation="10dp"
                 android:ellipsize="end"
+                android:gravity="center"
                 android:maxLines="7" />
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/colorGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="30dp"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -51,6 +77,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="20dp"
                         android:text="@string/type_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                     <TextView
@@ -61,6 +88,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:text="@string/price_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -80,6 +108,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="20dp"
                         android:text="@string/author_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                     <TextView
@@ -91,6 +120,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:text="@string/entry_date_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -111,6 +141,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="20dp"
                         android:text="@string/surface_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                     <TextView
@@ -122,6 +153,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:text="@string/rooms_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -139,6 +171,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="20dp"
                         android:text="@string/bedrooms_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                     <TextView
@@ -149,6 +182,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:text="@string/bathrooms_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -166,6 +200,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="20dp"
                         android:text="@string/sale_date_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                     <TextView
@@ -176,11 +211,20 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:text="@string/status_property"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/colorGrey" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -197,6 +241,7 @@
                     android:layout_marginBottom="50dp"
                     android:gravity="center"
                     android:text="@string/address_details"
+                    android:textColor="@color/colorBlack"
                     map:layout_constraintEnd_toEndOf="parent"
                     map:layout_constraintStart_toStartOf="parent"
                     map:layout_constraintTop_toTopOf="parent" />
@@ -205,9 +250,9 @@
                     android:id="@+id/liteMap_property"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
                     android:layout_marginBottom="10dp"
                     android:elevation="8dp"
                     map:layout_constraintBottom_toBottomOf="parent"

@@ -1,11 +1,15 @@
 package com.openclassrooms.realestatemanager.controller.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
@@ -31,7 +35,7 @@ class PropertyManagementActivity : BaseActivity() {
     private lateinit var viewDialog: View
     private var filePath: Uri? = null
     lateinit var adapter: PropertyImageRecyclerView
-    var propertiesImagesList = ArrayList<LinkedHashMap<String, String>>()
+    var propertiesImagesList = ArrayList<LinkedHashMap<Bitmap, String>>()
 
     override fun getLayoutId() = R.layout.activity_property_management
 
@@ -59,28 +63,29 @@ class PropertyManagementActivity : BaseActivity() {
 
         if (intent.getStringExtra(PROPERTY_UPDATE) != null) {
             mainViewModel.getProperty(intent.getStringExtra(PROPERTY_UPDATE)).observe(this, Observer {
-                editText_surface_property_management.setText(it.surfaceProperty.toString().toInt())
-                editText_address_property_management.setText(it.addressProperty)
-                editText_zipcode_property_management.setText(it.zipCodeProperty.toString().toInt())
-                editText_city_property_management.setText(it.cityProperty)
-                editText_price_property_management.setText(it.priceDollarProperty.toString().toInt())
-                editText_rooms_property_management.setText(it.roomsNumberProperty.toString().toInt())
-                editText_bedrooms_property_management.setText(it.bedroomsNumberProperty.toString().toInt())
-                editText_bathrooms_property_management.setText(it.bathroomsNumberProperty.toString().toInt())
-                editText_description_property_management.setText(it.descriptionProperty)
-                editText_author_property_management.setText(it.realEstateAgentProperty)
+                editText_surface_property_management.text = it.surfaceProperty.toString().toEditable()
+                editText_address_property_management.text = it.addressProperty.toEditable()
+                editText_addaddress_property_management.text = it.addAddressProperty.toEditable()
+                editText_zipcode_property_management.text = it.zipCodeProperty.toString().toEditable()
+                editText_city_property_management.text = it.cityProperty.toEditable()
+                editText_price_property_management.text = it.priceDollarProperty.toString().toEditable()
+                editText_rooms_property_management.text = it.roomsNumberProperty.toString().toEditable()
+                editText_bedrooms_property_management.text = it.bedroomsNumberProperty.toString().toEditable()
+                editText_bathrooms_property_management.text = it.bathroomsNumberProperty.toString().toEditable()
+                editText_description_property_management.text = it.descriptionProperty.toEditable()
+                editText_author_property_management.text = it.realEstateAgentProperty.toEditable()
                 if (it.statusProperty) editText_status_property_management.setSelection(1) else
                     editText_status_property_management.setSelection(0)
-                editText_sale_date_property_management.setText(it.saleDateProperty)
+                editText_sale_date_property_management.text = it.saleDateProperty.toEditable()
 
                 propertiesImagesList.addAll(Utils.deserializeArrayList(it.photosPropertyJSON))
                 adapter.notifyDataSetChanged()
             })
         }
-
         button_save_property_management.setOnClickListener { checkInformation() }
         imageView_button_add_property_management.setOnClickListener { configureAlertDialogForImage() }
     }
+    private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
     private fun checkInformation() {
         if (editText_address_property_management.text.trim().isEmpty() ||
@@ -142,8 +147,9 @@ class PropertyManagementActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            if (data != null || data!!.data != null) {
-                filePath = data.data
+            data?.let { toto ->
+                filePath = toto.data
+                Log.i("--------", toto.data.toString())
                 viewDialog.popupAddItem_ButtonImage.setImageBitmap(
                         MediaStore.Images.Media.getBitmap(contentResolver, filePath))
             }
@@ -161,8 +167,8 @@ class PropertyManagementActivity : BaseActivity() {
         }
         viewDialog.popupAddItem_Add.setOnClickListener {
             if (filePath != null && viewDialog.popupAddItem_Name.text.toString().trim().isNotEmpty()) {
-                val imagePropertyModel = LinkedHashMap<String, String>()
-                imagePropertyModel[filePath.toString()] = viewDialog.popupAddItem_Name.text.toString()
+                val imagePropertyModel = LinkedHashMap<Bitmap, String>()
+                imagePropertyModel[MediaStore.Images.Media.getBitmap(contentResolver, filePath)] = viewDialog.popupAddItem_Name.text.toString()
                 propertiesImagesList.add(imagePropertyModel)
                 filePath = null
                 alertDialog.dismiss()
@@ -173,8 +179,9 @@ class PropertyManagementActivity : BaseActivity() {
     }
 
     private fun launchGallery() {
-        val intent = Intent()
-        intent.type = "image/*"
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
     }

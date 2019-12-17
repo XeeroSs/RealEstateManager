@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.utils
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import com.google.gson.Gson
 import com.openclassrooms.realestatemanager.R
 
 

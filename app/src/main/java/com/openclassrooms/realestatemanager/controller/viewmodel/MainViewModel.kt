@@ -27,7 +27,7 @@ class MainViewModel(var propertyDataRepository: PropertyDataRepository,
         return propertyDataRepository.getProperty(propertyId)
     }
 
-    fun getProperties(context: Context): LiveData<List<PropertyModel>> {
+    fun getProperties(): LiveData<List<PropertyModel>> {
         databaseInstance.get().addOnCompleteListener { task ->
             for (document: DocumentSnapshot in task.result!!.documents) {
                 propertyDataRepository.createProperty(document.toObject(PropertyModel::class.java)!!,
