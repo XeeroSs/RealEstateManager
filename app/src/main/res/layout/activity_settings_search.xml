@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/available"
+                    android:text="@string/availability"
                     android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 

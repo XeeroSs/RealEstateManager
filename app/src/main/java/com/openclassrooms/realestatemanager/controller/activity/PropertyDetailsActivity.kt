@@ -1,54 +1,73 @@
 package com.openclassrooms.realestatemanager.controller.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PropertyImageRecyclerView
-import com.openclassrooms.realestatemanager.base.BaseActivity
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
-import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.utils.PROPERTY_ID
 import com.openclassrooms.realestatemanager.utils.PROPERTY_UPDATE
 import com.openclassrooms.realestatemanager.utils.Utils
+import com.openclassrooms.realestatemanager.utils.Utils.configureViewModel
 import kotlinx.android.synthetic.main.activity_property_details.*
 import kotlinx.android.synthetic.main.property_details_content.*
 
+class PropertyDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-class PropertyDetailsActivity : BaseActivity(), OnMapReadyCallback {
-
-    override fun getLayoutId() = R.layout.activity_property_details
-    private lateinit var propertyId: String
+    private var propertyId: String? = null
     private lateinit var mainViewModel: MainViewModel
-    lateinit var adapter: PropertyImageRecyclerView
+    private lateinit var adapter: PropertyImageRecyclerView
     private lateinit var map: GoogleMap
-    private lateinit var mapView: MapView
-    private lateinit var property: PropertyModel
+    private var mapView: MapView? = null
+    private val listImage = ArrayList<String>()
+    private val listText = ArrayList<String>()
+    private var property: PropertyModel? = null
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1233 && resultCode == Activity.RESULT_OK) finish()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mapView = findViewById(R.id.liteMap_property)
+        setContentView(R.layout.activity_property_details)
+
+        // Get the property id
+        propertyId = intent.getStringExtra(PROPERTY_ID)
+
+        // Check if propertyId is null, and initialize the ViewModel
+        propertyId?.let { id ->
+            configureViewModel(this)?.let {
+                mainViewModel = it
+                getProperty(id)
+            } ?: finish()
+        } ?: finish()
+
+        setSupportActionBar((management_toolbar as Toolbar?))
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+        }
+
+        // Get reference Map
+        mapView = liteMap_property
         with(mapView) {
             // Initialise the MapView
-            onCreate(null)
+            this?.onCreate(null)
             // Set the map ready callback to receive the GoogleMap object
-            getMapAsync(this@PropertyDetailsActivity)
+            this?.getMapAsync(this@PropertyDetailsActivity)
         }
-        configureViewModel()
-        getPropertyId()
-        setSupportActionBar((management_toolbar as Toolbar?))
-        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
-        getSupportActionBar()!!.setDisplayShowHomeEnabled(true)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,25 +79,31 @@ class PropertyDetailsActivity : BaseActivity(), OnMapReadyCallback {
         when (item.itemId) {
             android.R.id.home -> finish()
             R.id.action_toolbar_management -> {
-                val intent = Intent(this, PropertyManagementActivity::class.java)
-                intent.putExtra(PROPERTY_UPDATE, property.propertyId)
-                startActivity(intent)
+                property?.let {
+                    val intent = Intent(this, PropertyManagementActivity::class.java)
+                    intent.putExtra(PROPERTY_UPDATE, it.propertyId)
+                    startActivityForResult(intent, 1233)
+                }
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
+    // Configure the Map
     private fun configureMap(property: PropertyModel) {
         if (!::map.isInitialized) return
         with(map) {
+            // Get LatLng of property address information
             val address = Utils.getLatLngFromAddress(property.cityProperty +
                     property.zipCodeProperty.toString().toInt() +
                     property.addressProperty, this@PropertyDetailsActivity)
-            if (address != null) {
-                moveCamera(CameraUpdateFactory.newLatLngZoom(address, 15f))
-                addMarker(MarkerOptions().position(address))
+            address?.let {
+                // Move camera on the user location
+                moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
+                addMarker(MarkerOptions().position(it))
             }
+            // Sets the map type
             mapType = GoogleMap.MAP_TYPE_NORMAL
         }
 
@@ -90,48 +115,49 @@ class PropertyDetailsActivity : BaseActivity(), OnMapReadyCallback {
         this.map = googleMap ?: return
     }
 
-    private fun getPropertyId() {
-        propertyId = intent.getStringExtra(PROPERTY_ID)
-        getProperty()
-    }
-
-    private fun getProperty() {
+    // Gets property with data
+    private fun getProperty(propertyId: String) {
         mainViewModel.getProperty(propertyId).observe(this, Observer { property ->
-            if (property == null) finish()
             this.property = property
             configureUI()
         })
     }
 
+    // Configure the user interface with property data
     private fun configureUI() {
-        fun textViewCapacity(textView: TextView, text: String) {
-            textView.text = "${textView.text} $text"
+        property?.let {
+            fun textViewCapacity(textView: TextView, text: String) {
+                textView.text = getString(R.string.textview_propertydetails, textView.text, text)
+            }
+
+            textViewCapacity(textView_author_property, it.realEstateAgentProperty)
+            textViewCapacity(textView_address_property, "\n${it.addressProperty}," +
+                    " ${it.zipCodeProperty} ${it.cityProperty}" +
+                    if (it.addAddressProperty != "") ", ${it.addressProperty}." else ".")
+            textViewCapacity(textView_bathrooms_property, it.bathroomsNumberProperty.toString())
+            textViewCapacity(textView_bedrooms_property, it.bedroomsNumberProperty.toString())
+            textViewCapacity(textView_description_property_fragment, it.descriptionProperty)
+            textViewCapacity(textView_entry_sale_property, Utils.todayDate)
+            textViewCapacity(textView_price_property, it.priceDollarProperty.toString() + "$")
+            textViewCapacity(textView_rooms_property, it.roomsNumberProperty.toString())
+            textViewCapacity(textView_sale_date_property, it.saleDateProperty)
+            textViewCapacity(textView_status_property, if (it.statusProperty) getString(R.string.availability) else getString(R.string.not_available))
+            textViewCapacity(textView_type_property, it.typeProperty)
+            textViewCapacity(textView_surface_property, it.surfaceProperty.toString() + "m")
+
+            configureMap(it)
+            configureRecyclerView(it.photosPropertyJSON)
         }
-        textViewCapacity(textView_author_property, property.realEstateAgentProperty)
-        textViewCapacity(textView_address_property, "\n${property.addressProperty}")
-        textViewCapacity(textView_bathrooms_property, property.bathroomsNumberProperty.toString())
-        textViewCapacity(textView_bedrooms_property, property.bedroomsNumberProperty.toString())
-        textViewCapacity(textView_description_property_fragment, property.descriptionProperty)
-        textViewCapacity(textView_entry_sale_property, Utils.todayDate)
-        textViewCapacity(textView_price_property, property.priceDollarProperty.toString() + "$")
-        textViewCapacity(textView_rooms_property, property.roomsNumberProperty.toString())
-        textViewCapacity(textView_sale_date_property, property.saleDateProperty)
-        textViewCapacity(textView_status_property, if (property.statusProperty) getString(R.string.available) else getString(R.string.not_available))
-        textViewCapacity(textView_type_property, property.typeProperty)
-        textViewCapacity(textView_surface_property, property.surfaceProperty.toString() + "m")
-
-        if (map != null) configureMap(property)
-        configureRecyclerView(property.photosPropertyJSON)
     }
 
+    // Configure RecyclerView
     private fun configureRecyclerView(photosPropertyJSON: String) {
-            recyclerView_photos_property_fragment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            adapter = PropertyImageRecyclerView(this, Utils.deserializeArrayList(photosPropertyJSON))
-            recyclerView_photos_property_fragment.adapter = adapter
-    }
-
-    private fun configureViewModel() {
-        val viewModelProvider = Injection.provideViewModelFactory(this)
-        mainViewModel = ViewModelProviders.of(this, viewModelProvider).get(MainViewModel::class.java)
+        Utils.deserializeArrayList(photosPropertyJSON)?.let {
+            listImage.addAll(it.keys)
+            listText.addAll(it.values)
+        }
+        recyclerView_photos_property_fragment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        adapter = PropertyImageRecyclerView(this, listImage, listText, false)
+        recyclerView_photos_property_fragment.adapter = adapter
     }
 }

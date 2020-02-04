@@ -11,26 +11,22 @@ import com.openclassrooms.realestatemanager.database.dao.PropertyDao
 @Database(entities = [PropertyModel::class], version = 1, exportSchema = false)
 abstract class RealEstateManagerDatabase : RoomDatabase() {
 
-    // --- DAO ---
     abstract fun propertyDao(): PropertyDao
 
     companion object {
 
-        // --- SINGLETON ---
+        // Singleton
         @Volatile
         private var INSTANCE: RealEstateManagerDatabase? = null
 
-        // --- INSTANCE ---
+        // Instance
         fun getInstance(context: Context): RealEstateManagerDatabase? {
-            if (INSTANCE == null) {
-                synchronized(RealEstateManagerDatabase::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(context.applicationContext,
-                                RealEstateManagerDatabase::class.java, "Property.db")
-                                .allowMainThreadQueries()
-                                .build()
-                    }
-                }
+            INSTANCE?.let { return it } ?: synchronized(RealEstateManagerDatabase::class.java) {
+                INSTANCE?.let { return it }
+                INSTANCE = Room.databaseBuilder(context.applicationContext,
+                        RealEstateManagerDatabase::class.java, "Property.db")
+                        .allowMainThreadQueries()
+                        .build()
             }
             return INSTANCE
         }

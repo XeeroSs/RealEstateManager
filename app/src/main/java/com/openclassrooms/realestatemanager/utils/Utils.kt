@@ -1,17 +1,26 @@
 package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.io.ByteArrayOutputStream
+import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
+import com.openclassrooms.realestatemanager.database.RealEstateManagerDatabase
+import com.openclassrooms.realestatemanager.injection.ViewModelFactory
+import com.openclassrooms.realestatemanager.repositories.PropertyDataRepository
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.Executors
 import kotlin.math.roundToInt
 
 
@@ -21,6 +30,29 @@ import kotlin.math.roundToInt
 
 object Utils {
 
+    // Provide instance database
+    private fun provideViewModelFactory(context: Context): ViewModelFactory {
+        val dataSourceProperty = PropertyDataRepository(RealEstateManagerDatabase.getInstance(context)!!.propertyDao())
+        return ViewModelFactory(dataSourceProperty, Executors.newSingleThreadExecutor())
+    }
+
+    // ViewModel for Activity
+    fun configureViewModel(context: FragmentActivity): MainViewModel? {
+        val viewModelProvider = provideViewModelFactory(context)
+        return ViewModelProviders.of(context, viewModelProvider).get(MainViewModel::class.java)
+    }
+
+    // ViewModel for Fragment
+    fun configureViewModel(fragment: Fragment, context: Context): MainViewModel? {
+        val viewModelProvider = provideViewModelFactory(context)
+        return ViewModelProviders.of(fragment, viewModelProvider).get(MainViewModel::class.java)
+    }
+
+    // Show Toast
+    fun showToast(context: Context, textId: Int) =
+            Toast.makeText(context, context.getString(textId), Toast.LENGTH_SHORT).show()
+
+    // Get LatLng from address
     fun getLatLngFromAddress(address: String, context: Context): LatLng? {
         val coder = Geocoder(context)
         val listAddress: List<Address>
@@ -28,8 +60,9 @@ object Utils {
 
         try {
             listAddress = coder.getFromLocationName(address, 5)
-            if (listAddress == null) return null
-            point = LatLng(listAddress[0].latitude, listAddress[0].longitude)
+            listAddress?.let {
+                point = LatLng(it[0].latitude, it[0].longitude)
+            } ?: return null
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -37,22 +70,15 @@ object Utils {
         return point
     }
 
-    // Convertit une ArrayList en objet JSON pour mieux le manipulé dans SQLite
-    fun serializeArrayList(imagesList: ArrayList<LinkedHashMap<Bitmap, String>>) = Gson().toJson(imagesList)
+    // Converts a list to JSON object for handling in room database
+    fun serializeArrayList(imagesList: LinkedHashMap<String, String>) = Gson().toJson(imagesList)
 
-    // Convertit un objet JSON en ArrayList depuis SQLite
-    fun deserializeArrayList(stringJSON: String): ArrayList<LinkedHashMap<Bitmap, String>> {
-        val type = object : TypeToken<ArrayList<LinkedHashMap<Bitmap, String>>>() {}.type
-        return Gson().fromJson<ArrayList<LinkedHashMap<Bitmap, String>>>(stringJSON, type)
+
+    // Converts a JSON object to list
+    fun deserializeArrayList(stringJSON: String): LinkedHashMap<String, String>? {
+        val type = object : TypeToken<LinkedHashMap<String, String>>() {}.type
+        return Gson().fromJson<LinkedHashMap<String, String>>(stringJSON, type)
     }
-
-    fun getBytes(bitmap: Bitmap): ByteArray {
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream)
-        return stream.toByteArray()
-    }
-
-    fun getImage(image: ByteArray) = BitmapFactory.decodeByteArray(image, 0, image.size)
 
     /**
      * Conversion de la date d'aujourd'hui en un format plus approprié
@@ -77,11 +103,6 @@ object Utils {
     fun convertEuroToDollar(euros: Int) = (euros / 0.812).roundToInt()
 
 
-    /*fun convertMoney(money: Int, isDollar: Boolean) =
-            if (isDollar) (money * 0.812).roundToInt() else
-                (money / 0.812).roundToInt()*/
-
-
     /**
      * Vérification de la connexion réseau
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
@@ -89,7 +110,29 @@ object Utils {
      * @return
      */
     fun isInternetAvailable(context: Context): Boolean {
-        val network = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return network.activeNetworkInfo != null && network.activeNetworkInfo.isConnected
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val network =
+                    connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            return when {
+                network.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                network.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                network.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else connectivityManager.run {
+            connectivityManager.activeNetworkInfo?.run {
+                return when (type) {
+                    ConnectivityManager.TYPE_WIFI -> true
+                    ConnectivityManager.TYPE_MOBILE -> true
+                    ConnectivityManager.TYPE_ETHERNET -> true
+                    else -> false
+                }
+
+            }
+        }
+
+        return false
     }
 }

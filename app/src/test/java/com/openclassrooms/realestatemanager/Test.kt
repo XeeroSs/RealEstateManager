@@ -6,6 +6,8 @@ import org.junit.Test
 
 class Test {
 
+
+
     private val dollars = 10
     private val euros = 10
 

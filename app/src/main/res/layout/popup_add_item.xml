@@ -16,22 +16,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/popupAddItem_ButtonImage"
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/border_button_rectangle" />
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="4dp">
+
+                <ImageView
+                    android:id="@+id/popupAddItem_ButtonImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_button_rectangle"
+                    android:scaleType="fitXY" />
+            </androidx.cardview.widget.CardView>
 
             <EditText
-                android:layout_gravity="center"
-                android:layout_marginStart="14dp"
                 android:id="@+id/popupAddItem_Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="14dp"
                 android:hint="@string/text_name"
-                android:textSize="14sp"
                 android:maxLength="30"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

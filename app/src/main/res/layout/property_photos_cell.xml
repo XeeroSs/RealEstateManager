@@ -2,31 +2,55 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView_media_cell"
-    android:layout_width="110dp"
-    android:layout_height="120dp"
+    android:layout_width="130dp"
+    android:layout_height="130dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="4dp">
 
-    <LinearLayout
-        android:layout_width="100dp"
-        android:elevation="10dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView_photo_property_cell"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop" />
+            android:id="@+id/imagePropertyCell_deleteImage"
+            android:layout_width="wrap_content"
+            android:background="@drawable/button_round"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="3dp"
+            android:alpha="0.25"
+            android:src="@drawable/image_delete"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imagePropertyCell_ImageView"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:alpha="0.25"
+            android:background="@color/colorBlack"
+            android:elevation="10dp"
+            android:gravity="center" />
 
         <TextView
-            android:id="@+id/textView_description_photo_cell"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_width="115dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:elevation="10dp"
             android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1" />
+            android:id="@+id/imagePropertyCell_textImage"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
 
-    </LinearLayout>
+
+    </RelativeLayout>
+
 </androidx.cardview.widget.CardView>

@@ -7,8 +7,8 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
+    <string name="menu_slideshow" translatable="false">Slideshow</string>
+    <string name="menu_tools" translatable="false">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="toolbar_search">SEARCH</string>
@@ -27,7 +27,7 @@
     <string name="type_property">Type:</string>
     <string name="price_property">Price:</string>
     <string name="author_property">Author:</string>
-    <string name="entry_date_property">Entry date:</string>
+    <string name="entry_date_property">Date:</string>
     <string name="surface_property">Surface:</string>
     <string name="rooms_property">Rooms:</string>
     <string name="bedrooms_property">Bedrooms:</string>
@@ -35,10 +35,9 @@
     <string name="sale_date_property">Sale date:</string>
     <string name="status_property">Status:</string>
     <string name="not_available">Not Available</string>
-    <string name="available">Available</string>
+    <string name="availability">Availability: </string>
     <string name="missing_information">Missing information</string>
-    <string name="title_activity_property_management">title_activity_property_management</string>
-    <string name="hello_blank_fragment">coucou</string>
+    <string name="title_activity_property_management" translatable="false">Management</string>
     <string name="message_error">An error has occurred, please try again</string>
     <string name="cancel">CANCEL</string>
     <string name="add">ADD</string>
@@ -60,18 +59,33 @@
     <string name="bedroom_0_100">Bedroom : 0 – 100</string>
     <string name="room_0_100">Room : 0 – 100</string>
     <string name="bathroom_0_100">Bathroom : 0 – 100</string>
-    <string name="map">MAP</string>
+    <string name="map" translatable="false">MAP</string>
     <string name="not_found_localisation">Your position is not found</string>
+    <string name="missing_permission">Missing Permission</string>
+    <string name="need_permission_text">Missing Permission</string>
+    <string name="need_permission">Permission needed</string>
 
     <string-array name="available">
         <item> Available </item>
-        <item> Not Available </item>
+        <item> Sold </item>
     </string-array>
 
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
     <string-array name="available_search">
         <item></item>
         <item> Available </item>
-        <item> Not Available </item>
+        <item> Sold </item>
     </string-array>
+    <string name="textview_propertydetails" translatable="false">%1$s %2$s</string>
+    <string name="category_numberstart_numberend" translatable="false">%1$s : %2$d - %3$d</string>
+    <string name="select_on_option">Select an option</string>
+    <string name="price_dollars">Price (Dollars)</string>
+    <string name="surface_number">Surface (In m²)</string>
+    <string name="number_room">Room</string>
+    <string name="number_bedroom">Bedroom</string>
+    <string name="number_bathroom">Bathroom</string>
+    <string name="manage" translatable="false">MANAGE</string>
+    <string name="select_property">Please select a property</string>
 
 </resources>

@@ -1,10 +1,8 @@
 package com.openclassrooms.realestatemanager.controller.viewmodel
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,43 +12,58 @@ import com.openclassrooms.realestatemanager.repositories.PropertyDataRepository
 import com.openclassrooms.realestatemanager.utils.PROPERTY_COLLECTION
 import java.util.concurrent.Executor
 
-class MainViewModel(var propertyDataRepository: PropertyDataRepository,
-                    var executor: Executor) : ViewModel() {
+class MainViewModel(private var propertyDataRepository: PropertyDataRepository,
+                    private var executor: Executor) : ViewModel() {
 
-    private var listPropertiesLiveData = MutableLiveData<List<PropertyModel>>()
-    private var listProperties = ArrayList<PropertyModel>()
-    private var property = MutableLiveData<PropertyModel>()
+    // Instance firebase database
     private val databaseInstance =
             FirebaseFirestore.getInstance().collection(PROPERTY_COLLECTION)
 
-    fun getProperty(propertyId: String): LiveData<PropertyModel> {
-        return propertyDataRepository.getProperty(propertyId)
-    }
+    // GETS PROPERTY
+    fun getProperty(propertyId: String) = propertyDataRepository.getProperty(propertyId)
 
+    // Gets a random property Id
+    fun getPropertyId(): String? = databaseInstance.document().id
+
+    // GETS PROPERTIES
     fun getProperties(): LiveData<List<PropertyModel>> {
         databaseInstance.get().addOnCompleteListener { task ->
-            for (document: DocumentSnapshot in task.result!!.documents) {
-                propertyDataRepository.createProperty(document.toObject(PropertyModel::class.java)!!,
-                        document.id)
+            task.result?.let { querySnapshot ->
+                // Properties in the firebase database are registered in the user internal storage
+                querySnapshot.documents.forEach { document ->
+                    document.toObject(PropertyModel::class.java)?.let { property ->
+                        propertyDataRepository.createProperty(property)
+                    }
+                }
             }
         }
+        // Gets property list of the user internal storage
         return propertyDataRepository.getProperties()
     }
 
-    fun createProperty(propertyModel: PropertyModel, context: Context) = executor.execute {
-        databaseInstance.add(propertyModel).addOnCompleteListener {
+    // CREATE PROPERTY
+    fun createProperty(propertyModel: PropertyModel, context: Context, propertyId: String) = executor.execute {
+        // Sets property Id
+        propertyModel.propertyId = propertyId
+        // Save property in firebase database
+        databaseInstance.document(propertyId).set(propertyModel).addOnCompleteListener {
             executor.execute {
-                val id = it.result!!.id
-                propertyDataRepository.createProperty(propertyModel, id)
+                // Save property in user internal storage
+                propertyDataRepository.createProperty(propertyModel)
             }
         }.addOnFailureListener {
             Toast.makeText(context, context.getString(R.string.message_error), Toast.LENGTH_SHORT).show()
         }
     }
 
+    // UPDATE PROPERTY
     fun updateProperty(id: String, propertyModel: PropertyModel, context: Context) = executor.execute {
+        // Sets property Id
+        propertyModel.propertyId = id
+        // Replace property in firebase database
         databaseInstance.document(id).set(propertyModel).addOnCompleteListener {
             executor.execute {
+                // Replace property in user internal storage
                 propertyDataRepository.updateProperty(propertyModel)
             }
         }.addOnFailureListener {

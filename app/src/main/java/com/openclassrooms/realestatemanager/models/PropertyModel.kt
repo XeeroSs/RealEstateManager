@@ -2,11 +2,6 @@ package com.openclassrooms.realestatemanager.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.json.JSONArray
-import java.net.URI
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 @Entity
 data class PropertyModel(var surfaceProperty: Int = 0,
@@ -25,4 +20,5 @@ data class PropertyModel(var surfaceProperty: Int = 0,
                          var saleDateProperty: String = "Not sold",
                          var realEstateAgentProperty: String = "",
                          @PrimaryKey var propertyId: String = "",
-                         var photosPropertyJSON: String = "")
+                         var photosPropertyJSON: String = "",
+                         var photosProperty: String = "")

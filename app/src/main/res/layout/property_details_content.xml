@@ -19,7 +19,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_photos_property_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp" />
 
             <LinearLayout
@@ -72,10 +72,12 @@
 
                     <TextView
                         android:id="@+id/textView_type_property"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="20dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@string/type_property"
                         android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
@@ -102,11 +104,12 @@
 
                     <TextView
                         android:id="@+id/textView_author_property"
-
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="20dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@string/author_property"
                         android:textColor="@color/colorBlack"
                         android:textSize="16sp" />

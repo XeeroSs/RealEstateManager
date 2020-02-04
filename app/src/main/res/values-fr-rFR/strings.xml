@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Real Estate Manager</string>
+    <string name="add">AJOUTER</string>
+    <string name="add_address">Complément d\'adresse</string>
+    <string name="toolbar_add">AJOUTER</string>
+    <string name="address">Adresse</string>
+    <string name="address_details">Adresse:</string>
+    <string name="message_error">Une erreur s\'est produite, veuillez réessayer</string>
+    <string name="author">Auteur</string>
+    <string name="author_property">Auteur:</string>
+    <string name="availability">Disponibilité: </string>
+    <string name="bathroom_0_100">Salle de bain : 0 – 100</string>
+    <string name="bedroom_0_100">Chambre : 0 – 100</string>
+    <string name="bathrooms_property">Salles de bain:</string>
+    <string name="bathrooms">Salles de bain</string>
+    <string name="bedrooms">Chambres</string>
+    <string name="bedrooms_property">Chambres:</string>
+    <string name="cancel">ANNULER</string>
+    <string name="city">Ville</string>
+    <string name="description">Description</string>
+    <string name="entry_date_property">Date</string>
+    <string name="menu_gallery">Galerie</string>
+    <string name="menu_home">Accueil</string>
+    <string name="text_name">Description de l\'image</string>
+    <string name="bottom_navigation_menu_information">Information</string>
+    <string name="input_text">Entrer du texte</string>
+    <string name="input_text_optional">Entrer du texte (Facultatif)</string>
+    <string name="bottom_navigation_menu_location">Location</string>
+    <string name="location_not_found">Lieu non trouvé, veuillez vérifier les informations d\'adresse (adresse, adresse complémentaire, code postal et ville)</string>
+    <string name="toolbar_management">Gestion</string>
+    <string name="missing_information">Information manquante</string>
+    <string name="not_available">Non disponible</string>
+    <string name="price">Prix</string>
+    <string name="price_property">Prix:</string>
+    <string name="price_in_dollars">"Prix "</string>
+    <string name="price_in_dollars_0_at_500000000">Price : 0 – 500000000</string>
+    <string name="room_0_100">Salle : 0 – 100</string>
+    <string name="rooms">Salles</string>
+    <string name="rooms_property">Salles:</string>
+    <string name="sale_date_property">Date de vente:</string>
+    <string name="search">Recherche</string>
+    <string name="toolbar_search">RECHERCHE</string>
+    <string name="menu_send">Envoyer</string>
+    <string name="parameters">Paramètres</string>
+    <string name="settings">Paramètres</string>
+    <string name="menu_share">Partager</string>
+    <string name="status_property">Statut:</string>
+    <string name="surface_property">Surface:</string>
+    <string name="surface_in_m">Surface (en m²)</string>
+    <string name="surface_in_m_0_at_5000">Surface (en m²) : 0 – 5000</string>
+    <string name="surface">Surface (m²)</string>
+    <string name="title_activity_property_management" translatable="false">Gestion</string>
+    <string name="type">Type</string>
+    <string name="type_property">Type:</string>
+    <string name="save_property">Nouvelle propriété enregistrée.</string>
+    <string name="not_found_localisation">Votre position est introuvable.</string>
+    <string name="zip_code">Code postale</string>
+    <string name="missing_permission">Permission manquante</string>
+    <string name="need_permission">Permission manquante</string>
+    <string name="need_permission_text">Permission manquante</string>
+    <string name="select_on_option">Séléctionner une option</string>
+
+    <string-array name="available">
+        <item> Disponible </item>
+        <item> Vendue </item>
+    </string-array>
+
+    <string name="camera">Caméra</string>
+    <string name="gallery">Galerie</string>
+    <string name="surface_number">Surface (En m²)</string>
+    <string name="price_dollars">Prix (Dollars)</string>
+    <string name="number_room">Salle</string>
+    <string name="number_bedroom">Chambre</string>
+    <string name="number_bathroom">Salle de bain</string>
+    <string name="select_property">Veuillez séléctionner une propriété</string>
+
+    <string-array name="available_search">
+        <item></item>
+        <item> Disponible </item>
+        <item> Vendue </item>
+    </string-array>
+
+</resources>

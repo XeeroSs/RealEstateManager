@@ -1,16 +1,20 @@
 package com.openclassrooms.realestatemanager.adapter
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import kotlinx.android.synthetic.main.property_cell.view.*
-
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PropertySearchRecyclerView(val context: Context,
                                  val propertyListFull: ArrayList<PropertyModel>,
@@ -25,25 +29,25 @@ class PropertySearchRecyclerView(val context: Context,
         holder.textViewNameProperty.text = propertyList[position].addressProperty
         holder.textViewPriceProperty.text = propertyList[position].priceDollarProperty.toString()
         holder.textViewTypeProperty.text = propertyList[position].typeProperty
-        holder.imageViewProperty.setImageResource(R.drawable.ic_launcher_background)
+        Glide.with(context).load(Uri.parse(propertyList[position].photosProperty)).diskCacheStrategy(DiskCacheStrategy.DATA).into(holder.imageViewProperty)
     }
 
+    //
     override fun getFilter() = propertyListFilter
-
 
     private val propertyListFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults {
             val filteredList: MutableList<PropertyModel> = ArrayList()
-            if (constraint == null || constraint.isEmpty()) filteredList.addAll(propertyListFull) else {
-                val filterPattern = constraint.toString().toLowerCase().trim { it <= ' ' }
+            if (constraint.isEmpty()) filteredList.addAll(propertyListFull) else {
+                val filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim { it <= ' ' }
                 for (item in propertyListFull)
-                    if (item.addressProperty.toLowerCase().contains(filterPattern) ||
-                            item.descriptionProperty.toLowerCase().contains(filterPattern) ||
-                            item.cityProperty.toLowerCase().contains(filterPattern) ||
-                            item.addAddressProperty.toLowerCase().contains(filterPattern) ||
-                            item.realEstateAgentProperty.toLowerCase().contains(filterPattern) ||
-                            item.zipCodeProperty.toString().toLowerCase().contains(filterPattern) ||
-                            item.typeProperty.toLowerCase().contains(filterPattern)) filteredList.add(item)
+                    if (item.addressProperty.toLowerCase(Locale.getDefault()).contains(filterPattern) ||
+                            item.descriptionProperty.toLowerCase(Locale.getDefault()).contains(filterPattern) ||
+                            item.cityProperty.toLowerCase(Locale.getDefault()).contains(filterPattern) ||
+                            item.addAddressProperty.toLowerCase(Locale.getDefault()).contains(filterPattern) ||
+                            item.realEstateAgentProperty.toLowerCase(Locale.getDefault()).contains(filterPattern) ||
+                            item.zipCodeProperty.toString().toLowerCase(Locale.getDefault()).contains(filterPattern) ||
+                            item.typeProperty.toLowerCase(Locale.getDefault()).contains(filterPattern)) filteredList.add(item)
             }
             val results = FilterResults()
             results.values = filteredList

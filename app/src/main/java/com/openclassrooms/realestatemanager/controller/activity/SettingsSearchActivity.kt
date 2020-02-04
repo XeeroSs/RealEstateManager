@@ -7,15 +7,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
-import com.openclassrooms.realestatemanager.injection.Injection
-import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.utils.*
-import kotlinx.android.synthetic.main.activity_property_map.*
 import kotlinx.android.synthetic.main.activity_settings_search.*
+import java.util.*
 
 class SettingsSearchActivity : AppCompatActivity() {
 
@@ -24,8 +19,10 @@ class SettingsSearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings_search)
 
         setSupportActionBar(toolbar_settings as Toolbar?)
-        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
-        getSupportActionBar()!!.setDisplayShowHomeEnabled(true)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+        }
 
         configureSpinners()
         configureSeekBar()
@@ -33,7 +30,6 @@ class SettingsSearchActivity : AppCompatActivity() {
     }
 
     private fun configureSpinners() {
-        // CATEGORY 1
         ArrayAdapter.createFromResource(
                 this,
                 R.array.available_search, android.R.layout.simple_spinner_item
@@ -52,23 +48,33 @@ class SettingsSearchActivity : AppCompatActivity() {
 
     private fun configureSeekBar() {
         surface_seekbar.setOnRangeSeekbarChangeListener { minValue, maxValue ->
-            textview_seekbar_surface.text = "Surface (In m²) : ${minValue.toInt()} - ${maxValue.toInt()}"
+            textview_seekbar_surface.text = getString(R.string.category_numberstart_numberend,
+                    getString(R.string.surface_in_m), minValue.toInt(),
+                    maxValue.toInt())
         }
 
         price_seekbar.setOnRangeSeekbarChangeListener { minValue, maxValue ->
-            textview_seekbar_price.text = "Price (In dollars) : ${minValue.toInt()} - ${maxValue.toInt()}"
+            textview_seekbar_price.text = getString(R.string.category_numberstart_numberend,
+                    getString(R.string.price_dollars), minValue.toInt(),
+                    maxValue.toInt())
         }
 
         room_seekbar.setOnRangeSeekbarChangeListener { minValue, maxValue ->
-            textview_seekbar_room.text = "Room : ${minValue.toInt()} - ${maxValue.toInt()}"
+            textview_seekbar_room.text = getString(R.string.category_numberstart_numberend,
+                    getString(R.string.number_room), minValue.toInt(),
+                    maxValue.toInt())
         }
 
         bedroom_seekbar.setOnRangeSeekbarChangeListener { minValue, maxValue ->
-            textview_seekbar_bedroom.text = "Bedroom : ${minValue.toInt()} - ${maxValue.toInt()}"
+            textview_seekbar_bedroom.text = getString(R.string.category_numberstart_numberend,
+                    getString(R.string.number_bedroom), minValue.toInt(),
+                    maxValue.toInt())
         }
 
         bathroom_seekbar.setOnRangeSeekbarChangeListener { minValue, maxValue ->
-            textview_seekbar_bathroom.text = "Bathroom : ${minValue.toInt()} - ${maxValue.toInt()}"
+            textview_seekbar_bathroom.text = getString(R.string.category_numberstart_numberend,
+                    getString(R.string.number_bathroom), minValue.toInt(),
+                    maxValue.toInt())
         }
     }
 

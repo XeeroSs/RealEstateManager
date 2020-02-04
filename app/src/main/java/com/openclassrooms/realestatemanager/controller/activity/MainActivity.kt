@@ -1,63 +1,100 @@
 package com.openclassrooms.realestatemanager.controller.activity
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
+import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.openclassrooms.realestatemanager.adapter.PropertyRecyclerView
-import com.openclassrooms.realestatemanager.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.controller.fragment.PropertyDetailsFragment
-import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
-import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.models.PropertyModel
-import com.openclassrooms.realestatemanager.utils.OnItemClickListener
-import com.openclassrooms.realestatemanager.utils.PROPERTY_ID
-import com.openclassrooms.realestatemanager.utils.addOnItemClickListener
-import kotlinx.android.synthetic.main.property_details_content.*
-import kotlinx.android.synthetic.main.property_details_content.view.*
+import com.openclassrooms.realestatemanager.utils.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.main_toolbar.*
 
+class MainActivity : AppCompatActivity() {
 
-class MainActivity : BaseActivity() {
-
-    lateinit var adapter: PropertyRecyclerView
-    var propertiesList = ArrayList<PropertyModel>()
-    private lateinit var mainViewModel: MainViewModel
-    private lateinit var parentActivity: MainActivity
-
-    override fun getLayoutId() = R.layout.activity_main
+    private var adapter: PropertyRecyclerView? = null
+    private val propertiesList = ArrayList<PropertyModel>()
+    private var propertyId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        setSupportActionBar(toolbarMain)
 
         configureUI()
-        configureViewModel()
         getProperties()
 
+        // Item Click
         recyclerViewMain.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
-                if (activity_details_content == null) launchPropertyDetailsActivity(position)
+                if (findViewById<FrameLayout>(R.id.activity_details_content) == null) launchPropertyDetailsActivity(position)
                 else launchPropertyDetailsFragment(position)
             }
         })
     }
 
+    // Menu icons are inflated just as they were with actionbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_navigation_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            R.id.action_toolbar_map -> {
+                startActivity(Intent(this,
+                        PropertyMapActivity::class.java))
+                return true
+            }
+            R.id.action_toolbar_add -> {
+                startActivity(Intent(this,
+                        PropertyManagementActivity::class.java))
+                return true
+            }
+            R.id.action_toolbar_search -> {
+                startActivity(Intent(this,
+                        PropertySearchActivity::class.java))
+                return true
+            }
+            R.id.action_toolbar_manage -> {
+                if (findViewById<FrameLayout>(R.id.activity_details_content) == null || propertyId == null) {
+                    Utils.showToast(this, R.string.select_property)
+                    return true
+                }
+                val intent = Intent(this, PropertyManagementActivity::class.java)
+                intent.putExtra(PROPERTY_UPDATE, propertyId)
+                startActivityForResult(intent, 1233)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    // Change fragment for tablet
     private fun launchPropertyDetailsFragment(position: Int) {
         if (propertiesList.size > position) {
+            propertyId = propertiesList[position].propertyId
             val fragment = PropertyDetailsFragment().apply {
-                arguments = Bundle().apply { putString(PROPERTY_ID, propertiesList[position].propertyId) }
+                this.arguments = Bundle().apply { putString(PROPERTY_ID, propertiesList[position].propertyId) }
             }
-            parentActivity.supportFragmentManager
+            supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.activity_details_content, fragment)
                     .commit()
         }
     }
 
+    // Launch property activity
     private fun launchPropertyDetailsActivity(position: Int) {
         if (propertiesList.size > position) {
             val intent = Intent(this, PropertyDetailsActivity::class.java)
@@ -66,26 +103,23 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    // Configure RecyclerView
     private fun configureUI() {
-        // RecyclerView
         recyclerViewMain.layoutManager = LinearLayoutManager(this)
         adapter = PropertyRecyclerView(this, propertiesList)
         recyclerViewMain.adapter = adapter
     }
 
+    // Get properties from the ViewModel
     private fun getProperties() {
-        mainViewModel.getProperties().observe(this, Observer { properties ->
-            if (properties != null) {
-                propertiesList.clear()
-                propertiesList.addAll(properties)
-                adapter.notifyDataSetChanged()
-            }
-        })
+        Utils.configureViewModel(this)?.let { mainViewModel ->
+            mainViewModel.getProperties().observe(this, Observer { properties ->
+                if (properties != null) {
+                    propertiesList.clear()
+                    propertiesList.addAll(properties)
+                    adapter?.notifyDataSetChanged()
+                }
+            })
+        }
     }
-
-    private fun configureViewModel() {
-        val viewModelProvider = Injection.provideViewModelFactory(this)
-        mainViewModel = ViewModelProviders.of(this, viewModelProvider).get(MainViewModel::class.java)
-    }
-
 }
