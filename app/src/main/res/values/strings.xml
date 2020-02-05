@@ -11,7 +11,7 @@
     <string name="menu_tools" translatable="false">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="toolbar_search">SEARCH</string>
+    <string name="toolbar_search">Search</string>
     <string name="toolbar_add">ADD</string>
     <string name="toolbar_management">MANAGEMENT</string>
     <string name="input_text">Input text</string>
@@ -35,7 +35,7 @@
     <string name="sale_date_property">Sale date:</string>
     <string name="status_property">Status:</string>
     <string name="not_available">Not Available</string>
-    <string name="availability">Availability: </string>
+    <string name="availability">Availability</string>
     <string name="missing_information">Missing information</string>
     <string name="title_activity_property_management" translatable="false">Management</string>
     <string name="message_error">An error has occurred, please try again</string>
@@ -85,7 +85,7 @@
     <string name="number_room">Room</string>
     <string name="number_bedroom">Bedroom</string>
     <string name="number_bathroom">Bathroom</string>
-    <string name="manage" translatable="false">MANAGE</string>
+    <string name="manage">Management</string>
     <string name="select_property">Please select a property</string>
 
 </resources>

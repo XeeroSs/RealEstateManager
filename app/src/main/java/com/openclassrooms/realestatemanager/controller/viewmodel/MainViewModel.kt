@@ -32,7 +32,7 @@ class MainViewModel(private var propertyDataRepository: PropertyDataRepository,
                 // Properties in the firebase database are registered in the user internal storage
                 querySnapshot.documents.forEach { document ->
                     document.toObject(PropertyModel::class.java)?.let { property ->
-                        propertyDataRepository.createProperty(property)
+                        propertyDataRepository.updateProperty(property)
                     }
                 }
             }

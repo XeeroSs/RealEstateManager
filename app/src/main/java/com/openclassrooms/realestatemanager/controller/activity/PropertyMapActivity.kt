@@ -65,8 +65,7 @@ class PropertyMapActivity : AppCompatActivity(), LocationListener {
                                 it.zipCodeProperty.toString().toInt() +
                                 it.addressProperty, this)?.let { latLng ->
                             googleMap?.addMarker(MarkerOptions().position(latLng)
-                                    .title(it.propertyId)
-                                    .anchor(0.5f, 0.5f))
+                                    .title(it.propertyId))
                         }
                     }
                 } ?: finish()

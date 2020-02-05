@@ -133,7 +133,7 @@ class PropertyDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             textViewCapacity(textView_author_property, it.realEstateAgentProperty)
             textViewCapacity(textView_address_property, "\n${it.addressProperty}," +
                     " ${it.zipCodeProperty} ${it.cityProperty}" +
-                    if (it.addAddressProperty != "") ", ${it.addressProperty}." else ".")
+                    if (it.addAddressProperty != "") ", ${it.addAddressProperty}." else ".")
             textViewCapacity(textView_bathrooms_property, it.bathroomsNumberProperty.toString())
             textViewCapacity(textView_bedrooms_property, it.bedroomsNumberProperty.toString())
             textViewCapacity(textView_description_property_fragment, it.descriptionProperty)

@@ -9,7 +9,7 @@
     <string name="message_error">Une erreur s\'est produite, veuillez réessayer</string>
     <string name="author">Auteur</string>
     <string name="author_property">Auteur:</string>
-    <string name="availability">Disponibilité: </string>
+    <string name="availability">Disponibile</string>
     <string name="bathroom_0_100">Salle de bain : 0 – 100</string>
     <string name="bedroom_0_100">Chambre : 0 – 100</string>
     <string name="bathrooms_property">Salles de bain:</string>
@@ -37,10 +37,11 @@
     <string name="price_in_dollars_0_at_500000000">Price : 0 – 500000000</string>
     <string name="room_0_100">Salle : 0 – 100</string>
     <string name="rooms">Salles</string>
+    <string name="manage">Gérer</string>
     <string name="rooms_property">Salles:</string>
     <string name="sale_date_property">Date de vente:</string>
     <string name="search">Recherche</string>
-    <string name="toolbar_search">RECHERCHE</string>
+    <string name="toolbar_search">Recherche</string>
     <string name="menu_send">Envoyer</string>
     <string name="parameters">Paramètres</string>
     <string name="settings">Paramètres</string>

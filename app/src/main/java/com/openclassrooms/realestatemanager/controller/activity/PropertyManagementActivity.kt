@@ -9,6 +9,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -268,13 +269,12 @@ class PropertyManagementActivity : AppCompatActivity() {
         return Uri.parse(path)
     }
 
-    /*@Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
-    }*/
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     // Adding image for photos list
     private fun configureAlertDialogForImage() {
@@ -318,22 +318,7 @@ class PropertyManagementActivity : AppCompatActivity() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity(packageManager)?.also {
-                // Create the File where the photo should go
-                /* val photoFile: File? = try {
-                     createImageFile()
-                 } catch (ex: IOException) {
-                     null
-                 }
-                 // Continue only if the File was successfully created
-                 photoFile?.also {
-                     val photoURI: Uri = FileProvider.getUriForFile(
-                             this,
-                             "com.openclassrooms.android.fileprovider",
-                             it
-                     )*/
-                //   takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, pickImageRequest)
-                //}
             }
         }
     }
