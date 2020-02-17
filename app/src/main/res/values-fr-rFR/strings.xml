@@ -75,6 +75,7 @@
     <string name="number_bedroom">Chambre</string>
     <string name="number_bathroom">Salle de bain</string>
     <string name="select_property">Veuillez séléctionner une propriété</string>
+    <string name="no_internet">Action impossible, vous devez être connecté à internet.</string>
 
     <string-array name="available_search">
         <item></item>

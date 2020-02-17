@@ -24,8 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="opacityPercent" value="80" />
-                                                <entry key="paddingPercent" value="30" />
+                                                <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -36,7 +35,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_clear_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/notification/ic_event_available_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -70,8 +69,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="image_delete" />
-                                      <entry key="theme" value="HOLO_DARK" />
+                                      <entry key="outputName" value="image_available" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>

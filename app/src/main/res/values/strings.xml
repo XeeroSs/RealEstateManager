@@ -87,5 +87,6 @@
     <string name="number_bathroom">Bathroom</string>
     <string name="manage">Management</string>
     <string name="select_property">Please select a property</string>
+    <string name="no_internet">You can not, you must be connected to the internet.</string>
 
 </resources>

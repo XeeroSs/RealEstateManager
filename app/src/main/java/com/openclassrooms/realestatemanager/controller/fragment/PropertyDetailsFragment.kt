@@ -113,20 +113,19 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
             }
 
             viewFragment?.let { view ->
-                textViewCapacity(view.findViewById(R.id.textView_author_property), it.realEstateAgentProperty)
+                textViewCapacity(view.findViewById(R.id.textView_author_property), it.realEstateAgentProperty + " (Entry date: ${it.dateProperty})")
                 textViewCapacity(view.findViewById(R.id.textView_address_property), "\n${it.addressProperty}," +
                         " ${it.zipCodeProperty} ${it.cityProperty}" +
                         if (it.addAddressProperty != "") ", ${it.addAddressProperty}." else ".")
                 textViewCapacity(view.findViewById(R.id.textView_bathrooms_property), it.bathroomsNumberProperty.toString())
                 textViewCapacity(view.findViewById(R.id.textView_bedrooms_property), it.bedroomsNumberProperty.toString())
                 textViewCapacity(view.findViewById(R.id.textView_description_property_fragment), it.descriptionProperty)
-                textViewCapacity(view.findViewById(R.id.textView_entry_sale_property), Utils.todayDate)
                 textViewCapacity(view.findViewById(R.id.textView_price_property), it.priceDollarProperty.toString() + "$")
                 textViewCapacity(view.findViewById(R.id.textView_rooms_property), it.roomsNumberProperty.toString())
-                textViewCapacity(view.findViewById(R.id.textView_sale_date_property), it.saleDateProperty)
-                textViewCapacity(view.findViewById(R.id.textView_status_property), if (it.statusProperty) getString(R.string.availability) else getString(R.string.not_available))
+                textViewCapacity(view.findViewById(R.id.textView_status_property), if (it.statusProperty) getString(R.string.availability) else
+                    getString(R.string.not_available) + " (Sale date: ${it.saleDateProperty})")
                 textViewCapacity(view.findViewById(R.id.textView_type_property), it.typeProperty)
-                textViewCapacity(view.findViewById(R.id.textView_surface_property), it.surfaceProperty.toString() + "m")
+                textViewCapacity(view.findViewById(R.id.textView_surface_property), it.surfaceProperty.toString())
 
                 configureMap(it, view)
                 configureRecyclerView(it.photosPropertyJSON, view)

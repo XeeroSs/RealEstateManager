@@ -66,6 +66,12 @@ class PropertyManagementActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_property_management)
+
+        if (!Utils.isInternetAvailable(this)) {
+            showToast(this, R.string.no_internet)
+            finish()
+        }
+
         configureViewModel(this)?.let {
             mainViewModel = it
             configureUI()
@@ -80,11 +86,13 @@ class PropertyManagementActivity : AppCompatActivity() {
     }
 
     private fun userInteractWithScreen() {
-        imageView_photo_property_management.setOnClickListener {
+        button_add_imageMain_property_management.setOnClickListener {
             showAlertDialogGalleryOrCamera(true)
         }
         button_save_property_management.setOnClickListener { checkInformation() }
-        imageView_button_add_property_management.setOnClickListener { configureAlertDialogForImage() }
+        button_add_imageList_property_management.setOnClickListener {
+            configureAlertDialogForImage()
+        }
     }
 
     // Popup with choice between camera and gallery for get image
@@ -102,18 +110,7 @@ class PropertyManagementActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun configureSpinners() {
-        ArrayAdapter.createFromResource(this,
-                R.array.available, android.R.layout.simple_spinner_item
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            editText_status_property_management.adapter = it
-        }
-    }
-
     private fun configureUI() {
-        configureSpinners()
-
         // RecyclerView
         recyclerView_media_property_management.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         adapter = PropertyImageRecyclerView(this, listImage, listText, true)
@@ -136,8 +133,8 @@ class PropertyManagementActivity : AppCompatActivity() {
                 editText_bathrooms_property_management.text = it.bathroomsNumberProperty.toString().toEditable()
                 editText_description_property_management.text = it.descriptionProperty.toEditable()
                 editText_author_property_management.text = it.realEstateAgentProperty.toEditable()
-                if (it.statusProperty) editText_status_property_management.setSelection(1) else
-                    editText_status_property_management.setSelection(0)
+                if (it.statusProperty) radioGroup_available.isChecked = true else
+                    radioGroup_sold.isChecked = true
                 Glide.with(this).load(it.photosProperty).into(imageView_photo_property_management)
                 mainPhoto = it.photosProperty
                 this.propertyId = it.propertyId
@@ -159,20 +156,23 @@ class PropertyManagementActivity : AppCompatActivity() {
 
     private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
+    private fun isAvailable() = radioGroup_available.isChecked
+
+
     // Check before create/modify a property that everything is correct
     private fun checkInformation() {
-        if (editText_address_property_management.text.trim().isEmpty() ||
-                editText_zipcode_property_management.text.trim().isEmpty() ||
-                editText_city_property_management.text.trim().isEmpty() ||
-                editText_bathrooms_property_management.text.trim().isEmpty() ||
-                editText_bedrooms_property_management.text.trim().isEmpty() ||
-                editText_description_property_management.text.trim().isEmpty() ||
-                editText_price_property_management.text.trim().isEmpty() ||
-                editText_rooms_property_management.text.trim().isEmpty() ||
-                editText_author_property_management.text.trim().isEmpty() ||
-                editText_surface_property_management.text.trim().isEmpty() ||
+        if (editText_address_property_management.text?.trim()?.isEmpty()!! ||
+                editText_zipcode_property_management.text?.trim()?.isEmpty()!! ||
+                editText_city_property_management.text?.trim()?.isEmpty()!! ||
+                editText_bathrooms_property_management.text?.trim()?.isEmpty()!! ||
+                editText_bedrooms_property_management.text?.trim()?.isEmpty()!! ||
+                editText_description_property_management.text?.trim()?.isEmpty()!! ||
+                editText_price_property_management.text?.trim()?.isEmpty()!! ||
+                editText_rooms_property_management.text?.trim()?.isEmpty()!! ||
+                editText_author_property_management.text?.trim()?.isEmpty()!! ||
+                editText_surface_property_management.text?.trim()?.isEmpty()!! ||
                 imageView_photo_property_management.background == null ||
-                editText_type_property_management.text.trim().isEmpty()) {
+                editText_type_property_management.text?.trim()?.isEmpty()!!) {
             Toast.makeText(this, getString(R.string.missing_information), Toast.LENGTH_SHORT).show()
             return
         }
@@ -205,10 +205,8 @@ class PropertyManagementActivity : AppCompatActivity() {
                 dateProperty = Utils.todayDate,
                 photosPropertyJSON = photosPropertyJSON,
                 realEstateAgentProperty = editText_author_property_management.text.toString(),
-                statusProperty = editText_status_property_management.selectedItem.toString() == ("Available") ||
-                        editText_status_property_management.selectedItem.toString() == ("Disponible"),
-                saleDateProperty = if (editText_status_property_management.selectedItem.toString() == ("Available") ||
-                        editText_status_property_management.selectedItem.toString() == ("Disponible")) "Not sold" else Utils.todayDate,
+                statusProperty = isAvailable(),
+                saleDateProperty = if (isAvailable()) "Not sold" else Utils.todayDate,
                 photosProperty = mainPhoto)
 
         intent.getStringExtra(PROPERTY_UPDATE)?.let { _ ->

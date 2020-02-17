@@ -11,264 +11,476 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:elevation="8dp"
+            app:cardCornerRadius="4dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_photos_property_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:background="@color/colorGrey" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:text="@string/description"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:id="@+id/textView_description_property_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
-                android:elevation="10dp"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="7" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:background="@color/colorGrey" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="13dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Media"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/textView_type_property"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="@string/type_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/textView_price_property"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/price_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_photos_property_fragment"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:layout_marginBottom="13dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView_author_property"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="@string/author_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/textView_entry_sale_property"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/entry_date_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginBottom="13dp"
-
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView_surface_property"
-                        android:layout_width="wrap_content"
-
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/surface_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/textView_rooms_property"
-                        android:layout_width="wrap_content"
-
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/rooms_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="13dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView_bedrooms_property"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/bedrooms_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/textView_bathrooms_property"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/bathrooms_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView_sale_date_property"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/sale_date_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/textView_status_property"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/status_property"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:background="@color/colorGrey" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp" />
 
                 <TextView
-                    android:id="@+id/textView_address_property"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Description"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView_description_property_fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="50dp"
-                    android:gravity="center"
-                    android:text="@string/address_details"
-                    android:textColor="@color/colorBlack"
-                    map:layout_constraintEnd_toEndOf="parent"
-                    map:layout_constraintStart_toStartOf="parent"
-                    map:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp" />
 
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/liteMap_property"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="10dp"
-                    android:elevation="8dp"
-                    map:layout_constraintBottom_toBottomOf="parent"
-                    map:layout_constraintEnd_toEndOf="parent"
-                    map:layout_constraintStart_toStartOf="parent"
-                    map:layout_constraintTop_toBottomOf="@+id/textView_address_property"
-                    map:liteMode="true"
-                    map:mapType="none" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="40dp"
+                    android:orientation="vertical">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_price" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Price in Dollars"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_price_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_type" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Property's type"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_type_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_user" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="209dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Property's agent"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_author_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_surface" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="209dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Surface in m²"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_surface_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_home" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="209dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Number of rooms"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_rooms_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_bed" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="209dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Number of bedrooms"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_bedrooms_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_bath" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Number of bathrooms"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_bathrooms_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/image_available" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Property's availability"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_status_property"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="40dp"
+                        android:text="Location"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="10dp"
+                            map:layout_constraintEnd_toEndOf="parent"
+                            map:layout_constraintStart_toStartOf="parent"
+                            map:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/image_location_form" />
+
+                            <TextView
+                                android:id="@+id/textView_address_property"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:ellipsize="end"
+                                android:gravity="center"
+                                android:maxLines="10" />
+
+                        </LinearLayout>
+
+                        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="40dp"
+                            android:elevation="8dp"
+                            app:cardCornerRadius="4dp"
+                            map:layout_constraintBottom_toBottomOf="parent"
+                            map:layout_constraintEnd_toEndOf="parent"
+                            map:layout_constraintStart_toStartOf="parent"
+                            map:layout_constraintTop_toBottomOf="@+id/textView_address_property">
+
+                            <com.google.android.gms.maps.MapView
+                                android:id="@+id/liteMap_property"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                map:liteMode="true"
+                                map:mapType="none" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
 
-        </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
     </ScrollView>
 
 </FrameLayout>

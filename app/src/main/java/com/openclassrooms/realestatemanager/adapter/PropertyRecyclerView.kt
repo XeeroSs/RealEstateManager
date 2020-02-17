@@ -22,7 +22,7 @@ class PropertyRecyclerView(val context: Context, private val propertyList: List<
 
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
         holder.textViewNameProperty.text = propertyList[position].addressProperty
-        holder.textViewPriceProperty.text = propertyList[position].priceDollarProperty.toString()
+        holder.textViewPriceProperty.text = propertyList[position].priceDollarProperty.toString() + "$"
         holder.textViewTypeProperty.text = propertyList[position].typeProperty
         Glide.with(context).load(Uri.parse(propertyList[position].photosProperty)).diskCacheStrategy(DiskCacheStrategy.DATA).into(holder.imageViewProperty)
     }
