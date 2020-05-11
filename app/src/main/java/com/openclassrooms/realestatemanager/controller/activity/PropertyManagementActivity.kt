@@ -125,7 +125,7 @@ class PropertyManagementActivity : AppCompatActivity() {
                 editText_author_property_management.text = it.realEstateAgentProperty.toEditable()
                 if (it.statusProperty) radioGroup_available.isChecked = true else
                     radioGroup_sold.isChecked = true
-                Glide.with(this).load(it.photosProperty).into(imageView_photo_property_management)
+                Glide.with(this).load(it.photosProperty).into(imageMain_property_management)
                 mainPhoto = it.photosProperty
                 this.propertyId = it.propertyId
                 storage = FirebaseStorage.getInstance().getReference(it.propertyId)
@@ -161,7 +161,6 @@ class PropertyManagementActivity : AppCompatActivity() {
                 editText_rooms_property_management.text?.trim()?.isEmpty()!! ||
                 editText_author_property_management.text?.trim()?.isEmpty()!! ||
                 editText_surface_property_management.text?.trim()?.isEmpty()!! ||
-                imageView_photo_property_management.background == null ||
                 editText_type_property_management.text?.trim()?.isEmpty()!!) {
             Toast.makeText(this, getString(R.string.missing_information), Toast.LENGTH_SHORT).show()
             return
@@ -223,14 +222,14 @@ class PropertyManagementActivity : AppCompatActivity() {
                 // Main photo from gallery
                 PICK_MAIN_IMAGE_REQUEST_GALLERY -> {
                     filePathMainPhoto = it.data
-                    Glide.with(this).load(filePathMainPhoto).into(imageView_photo_property_management)
+                    Glide.with(this).load(filePathMainPhoto).into(imageMain_property_management)
                 }
                 // Main photo from camera
                 PICK_MAIN_IMAGE_REQUEST_CAMERA -> {
                     it.extras?.let { extras ->
                         val bitMap = extras.get("data") as Bitmap
                         filePathMainPhoto = getImageUri(bitMap)
-                        imageView_photo_property_management.setImageBitmap(bitMap)
+                        imageMain_property_management.setImageBitmap(bitMap)
                     }
                 }
                 // Photos list from camera

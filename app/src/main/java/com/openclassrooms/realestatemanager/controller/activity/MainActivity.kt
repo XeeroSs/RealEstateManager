@@ -1,20 +1,16 @@
 package com.openclassrooms.realestatemanager.controller.activity
 
-import androidx.lifecycle.Observer
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.Loader
-import com.openclassrooms.realestatemanager.adapter.PropertyRecyclerView
-import kotlin.collections.ArrayList
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.adapter.PropertyRecyclerView
 import com.openclassrooms.realestatemanager.controller.fragment.PropertyDetailsFragment
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.utils.*
@@ -43,6 +39,11 @@ class MainActivity : AppCompatActivity() {
                 else launchPropertyDetailsFragment(position)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        supportFragmentManager.beginTransaction().commit()
     }
 
     // Menu icons are inflated just as they were with actionbar

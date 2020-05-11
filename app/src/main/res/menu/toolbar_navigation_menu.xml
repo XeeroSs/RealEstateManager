@@ -3,27 +3,27 @@
     xmlns:actionbarcompat_mse="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_toolbar_map"
-        android:icon="@drawable/image_map"
+        android:icon="@drawable/image_map_2"
         android:orderInCategory="0"
         android:title="@string/map"
         actionbarcompat_mse:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_toolbar_add"
-        android:icon="@drawable/image_add"
+        android:icon="@drawable/image_add_3"
         android:orderInCategory="0"
         android:title="@string/toolbar_add"
         actionbarcompat_mse:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_toolbar_search"
-        android:icon="@drawable/image_search"
+        android:icon="@drawable/image_search_2"
         android:orderInCategory="0"
         android:title="@string/toolbar_search"
         actionbarcompat_mse:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_toolbar_manage"
-        android:icon="@drawable/image_pen"
+        android:icon="@drawable/image_pen_2"
         android:orderInCategory="0"
         android:title="@string/manage"
         actionbarcompat_mse:showAsAction="ifRoom" />
