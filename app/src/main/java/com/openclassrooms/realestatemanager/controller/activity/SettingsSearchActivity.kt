@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.Toolbar
+import androidx.loader.app.LoaderManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.*
 import kotlinx.android.synthetic.main.activity_settings_search.*

@@ -98,7 +98,7 @@ class PropertySearchActivity : AppCompatActivity(), SearchView.OnQueryTextListen
 
     // Gets properties without filter
     private fun getProperties() {
-        mainViewModel.getProperties().observe(this, Observer { properties ->
+        mainViewModel.getProperties()?.observe(this, Observer { properties ->
             properties?.let {
                 propertiesList.clear()
                 propertiesList.addAll(it)
@@ -119,26 +119,30 @@ class PropertySearchActivity : AppCompatActivity(), SearchView.OnQueryTextListen
                               minBathroom: Int,
                               maxBathroom: Int,
                               available: Boolean?) {
-        mainViewModel.getProperties().observe(this, Observer { properties ->
+        mainViewModel.getProperties()?.observe(this, Observer { properties ->
             properties?.let {
                 propertiesList.clear()
-                for (property in it) {
-                    if (property.priceDollarProperty in minPrice..maxPrice &&
-                            property.roomsNumberProperty in minRoom..maxRoom &&
-                            property.bedroomsNumberProperty in minBedroom..maxBedroom &&
-                            property.bathroomsNumberProperty in minBathroom..maxBathroom &&
-                            property.surfaceProperty in minSurface..maxSurface) {
-                        available?.let { availableNotNull ->
-                            if (property.statusProperty == availableNotNull) propertiesList.add(property)
-                        } ?: propertiesList.add(property)
-                    }
-                }
+                filterProperties(it, minPrice, maxPrice, minRoom, maxRoom, minBedroom, maxBedroom, minBathroom, maxBathroom, minSurface, maxSurface, available)
                 recyclerView_Search.layoutManager = LinearLayoutManager(this)
                 adapter = PropertySearchRecyclerView(this, propertiesList, propertiesListFull)
                 recyclerView_Search.adapter = adapter
                 adapter?.filter?.filter("")
             }
         })
+    }
+
+    private fun filterProperties(it: List<PropertyModel>, minPrice: Int, maxPrice: Int, minRoom: Int, maxRoom: Int, minBedroom: Int, maxBedroom: Int, minBathroom: Int, maxBathroom: Int, minSurface: Int, maxSurface: Int, available: Boolean?) {
+        for (property in it) {
+            if (property.priceDollarProperty in minPrice..maxPrice &&
+                    property.roomsNumberProperty in minRoom..maxRoom &&
+                    property.bedroomsNumberProperty in minBedroom..maxBedroom &&
+                    property.bathroomsNumberProperty in minBathroom..maxBathroom &&
+                    property.surfaceProperty in minSurface..maxSurface) {
+                available?.let { availableNotNull ->
+                    if (property.statusProperty == availableNotNull) propertiesList.add(property)
+                } ?: propertiesList.add(property)
+            }
+        }
     }
 
     private fun configureUI() {

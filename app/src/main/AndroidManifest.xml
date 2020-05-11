@@ -30,6 +30,11 @@
         <activity android:name=".controller.activity.SettingsSearchActivity"></activity>
         <activity android:name=".controller.activity.PropertySearchActivity" />
 
+        <provider
+            android:name=".provider.PropertyContentProvider"
+            android:authorities="com.openclassrooms.realestatemanager.provider"
+            android:exported="true"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

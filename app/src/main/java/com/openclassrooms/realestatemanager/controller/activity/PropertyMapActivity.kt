@@ -57,7 +57,7 @@ class PropertyMapActivity : AppCompatActivity(), LocationListener {
     // Gets properties
     private fun getProperties() {
         Utils.configureViewModel(this)?.let { viewModel ->
-            viewModel.getProperties().observe(this, Observer { properties ->
+            viewModel.getProperties()?.observe(this, Observer { properties ->
                 properties?.let {
                     // Properties is locate with at address and place on the map
                     properties.forEach {

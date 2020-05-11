@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.controller.activity
 
 import androidx.lifecycle.Observer
 import android.content.Intent
+import android.database.Cursor
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.Loader
 import com.openclassrooms.realestatemanager.adapter.PropertyRecyclerView
 import kotlin.collections.ArrayList
 import com.openclassrooms.realestatemanager.R
@@ -113,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     // Get properties from the ViewModel
     private fun getProperties() {
         Utils.configureViewModel(this)?.let { mainViewModel ->
-            mainViewModel.getProperties().observe(this, Observer { properties ->
+            mainViewModel.getProperties()?.observe(this, Observer { properties ->
                 if (properties != null) {
                     propertiesList.clear()
                     propertiesList.addAll(properties)

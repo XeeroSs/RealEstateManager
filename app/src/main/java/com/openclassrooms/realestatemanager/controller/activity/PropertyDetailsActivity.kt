@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PropertyImageRecyclerView
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
+import com.openclassrooms.realestatemanager.models.ImageModel
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.utils.PROPERTY_ID
 import com.openclassrooms.realestatemanager.utils.PROPERTY_UPDATE
@@ -30,8 +31,7 @@ class PropertyDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var adapter: PropertyImageRecyclerView
     private lateinit var map: GoogleMap
     private var mapView: MapView? = null
-    private val listImage = ArrayList<String>()
-    private val listText = ArrayList<String>()
+    private val imageList = ArrayList<ImageModel>()
     private var property: PropertyModel? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -117,7 +117,7 @@ class PropertyDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Gets property with data
     private fun getProperty(propertyId: String) {
-        mainViewModel.getProperty(propertyId).observe(this, Observer { property ->
+        mainViewModel.getProperty(propertyId)?.observe(this, Observer { property ->
             this.property = property
             configureUI()
         })
@@ -126,36 +126,40 @@ class PropertyDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     // Configure the user interface with property data
     private fun configureUI() {
         property?.let {
-            fun textViewCapacity(textView: TextView, text: String) {
-                textView.text = getString(R.string.textview_propertydetails, textView.text, text)
-            }
-
-            textViewCapacity(textView_author_property, it.realEstateAgentProperty + " (Entry date: ${it.dateProperty})")
-            textViewCapacity(textView_address_property, "\n${it.addressProperty}," +
-                    " ${it.zipCodeProperty} ${it.cityProperty}" +
-                    if (it.addAddressProperty != "") ", ${it.addAddressProperty}." else ".")
-            textViewCapacity(textView_bathrooms_property, it.bathroomsNumberProperty.toString())
-            textViewCapacity(textView_bedrooms_property, it.bedroomsNumberProperty.toString())
-            textViewCapacity(textView_description_property_fragment, it.descriptionProperty)
-            textViewCapacity(textView_price_property, it.priceDollarProperty.toString() + "$")
-            textViewCapacity(textView_rooms_property, it.roomsNumberProperty.toString())
-            textViewCapacity(textView_status_property, if (it.statusProperty) getString(R.string.availability) else getString(R.string.not_available) + " (Sale date: ${it.saleDateProperty})")
-            textViewCapacity(textView_type_property, it.typeProperty)
-            textViewCapacity(textView_surface_property, it.surfaceProperty.toString())
-
+            initializeTextView(it)
             configureMap(it)
-            configureRecyclerView(it.photosPropertyJSON)
+            configureRecyclerView()
         }
     }
 
-    // Configure RecyclerView
-    private fun configureRecyclerView(photosPropertyJSON: String) {
-        Utils.deserializeArrayList(photosPropertyJSON)?.let {
-            listImage.addAll(it.keys)
-            listText.addAll(it.values)
+    private fun initializeTextView(it: PropertyModel) {
+
+        fun textViewCapacity(textView: TextView, text: String) {
+            textView.text = getString(R.string.textview_propertydetails, textView.text, text)
         }
+
+        textViewCapacity(textView_author_property, it.realEstateAgentProperty + " (Entry date: ${it.dateProperty})")
+        textViewCapacity(textView_address_property, "\n${it.addressProperty}," +
+                " ${it.zipCodeProperty} ${it.cityProperty}" +
+                if (it.addAddressProperty != "") ", ${it.addAddressProperty}." else ".")
+        textViewCapacity(textView_bathrooms_property, it.bathroomsNumberProperty.toString())
+        textViewCapacity(textView_bedrooms_property, it.bedroomsNumberProperty.toString())
+        textViewCapacity(textView_description_property_fragment, it.descriptionProperty)
+        textViewCapacity(textView_price_property, it.priceDollarProperty.toString() + "$")
+        textViewCapacity(textView_rooms_property, it.roomsNumberProperty.toString())
+        textViewCapacity(textView_status_property, if (it.statusProperty) getString(R.string.availability) else getString(R.string.not_available) + " (Sale date: ${it.saleDateProperty})")
+        textViewCapacity(textView_type_property, it.typeProperty)
+        textViewCapacity(textView_surface_property, it.surfaceProperty.toString())
+    }
+
+    // Configure RecyclerView
+    private fun configureRecyclerView() {
+        // ! PropertyId don't not is null \/ !
+        mainViewModel.getImages(propertyId!!)?.observe(this, Observer { images ->
+            imageList.addAll(images)
+        })
         recyclerView_photos_property_fragment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        adapter = PropertyImageRecyclerView(this, listImage, listText, false)
+        adapter = PropertyImageRecyclerView(this, imageList, false)
         recyclerView_photos_property_fragment.adapter = adapter
     }
 }

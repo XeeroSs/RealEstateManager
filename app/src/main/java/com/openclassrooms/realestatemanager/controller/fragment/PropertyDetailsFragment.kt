@@ -19,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PropertyImageRecyclerView
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
+import com.openclassrooms.realestatemanager.models.ImageModel
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.utils.PROPERTY_ID
 import com.openclassrooms.realestatemanager.utils.Utils
@@ -31,8 +32,7 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var adapter: PropertyImageRecyclerView
     private lateinit var map: GoogleMap
     private var mapView: MapView? = null
-    private val listImage = ArrayList<String>()
-    private val listText = ArrayList<String>()
+    private val imageList = ArrayList<ImageModel>()
     private var property: PropertyModel? = null
     private lateinit var contextThis: Context
     private var viewFragment: View? = null
@@ -94,7 +94,7 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
 
     // Gets property with data
     private fun getProperty(propertyId: String) {
-        mainViewModel.getProperty(propertyId).observe(this, Observer { property ->
+        mainViewModel.getProperty(propertyId)?.observe(this, Observer { property ->
             this.property = property
             configureUI()
         })
@@ -128,19 +128,20 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
                 textViewCapacity(view.findViewById(R.id.textView_surface_property), it.surfaceProperty.toString())
 
                 configureMap(it, view)
-                configureRecyclerView(it.photosPropertyJSON, view)
+                // do stuff..
+                configureRecyclerView(view)
             }
         }
     }
 
     // Configure RecyclerView
-    private fun configureRecyclerView(photosPropertyJSON: String, view: View) {
-        Utils.deserializeArrayList(photosPropertyJSON)?.let {
-            listImage.addAll(it.keys)
-            listText.addAll(it.values)
-        }
+    private fun configureRecyclerView(view: View) {
+        // ! PropertyId don't not is null \/ !
+        mainViewModel.getImages(propertyId!!)?.observe(this, Observer { images ->
+            imageList.addAll(images)
+        })
         view.findViewById<RecyclerView>(R.id.recyclerView_photos_property_fragment).layoutManager = LinearLayoutManager(contextThis, LinearLayoutManager.HORIZONTAL, false)
-        adapter = PropertyImageRecyclerView(contextThis, listImage, listText, false)
+        adapter = PropertyImageRecyclerView(contextThis, imageList, false)
         view.findViewById<RecyclerView>(R.id.recyclerView_photos_property_fragment).adapter = adapter
     }
 }

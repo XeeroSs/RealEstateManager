@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.database.RealEstateManagerDatabase
 import com.openclassrooms.realestatemanager.injection.ViewModelFactory
+import com.openclassrooms.realestatemanager.repositories.ImageDataRepository
 import com.openclassrooms.realestatemanager.repositories.PropertyDataRepository
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,11 +31,16 @@ import kotlin.math.roundToInt
 
 object Utils {
 
+    private fun provideImageDataSource(context: Context) =
+            ImageDataRepository(RealEstateManagerDatabase.getInstance(context)?.imageDao())
+
+    private fun providePropertyDataSource(context: Context) =
+            PropertyDataRepository(RealEstateManagerDatabase.getInstance(context)?.propertyDao())
+
     // Provide instance database
-    private fun provideViewModelFactory(context: Context): ViewModelFactory {
-        val dataSourceProperty = PropertyDataRepository(RealEstateManagerDatabase.getInstance(context)!!.propertyDao())
-        return ViewModelFactory(dataSourceProperty, Executors.newSingleThreadExecutor())
-    }
+    private fun provideViewModelFactory(context: Context) =
+            ViewModelFactory(providePropertyDataSource(context),
+                    provideImageDataSource(context), Executors.newSingleThreadExecutor())
 
     // ViewModel for Activity
     fun configureViewModel(context: FragmentActivity): MainViewModel? {
@@ -68,16 +74,6 @@ object Utils {
         }
 
         return point
-    }
-
-    // Converts a list to JSON object for handling in room database
-    fun serializeArrayList(imagesList: LinkedHashMap<String, String>) = Gson().toJson(imagesList)
-
-
-    // Converts a JSON object to list
-    fun deserializeArrayList(stringJSON: String): LinkedHashMap<String, String>? {
-        val type = object : TypeToken<LinkedHashMap<String, String>>() {}.type
-        return Gson().fromJson<LinkedHashMap<String, String>>(stringJSON, type)
     }
 
     /**
@@ -114,7 +110,8 @@ object Utils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val networkCapabilities = connectivityManager.activeNetwork ?: return false
             val network =
-                    connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+                    connectivityManager.getNetworkCapabilities(networkCapabilities)
+                            ?: return false
             return when {
                 network.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
                 network.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true

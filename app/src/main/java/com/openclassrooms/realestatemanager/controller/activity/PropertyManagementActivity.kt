@@ -5,18 +5,15 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -26,11 +23,11 @@ import com.google.firebase.storage.StorageReference
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PropertyImageRecyclerView
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
+import com.openclassrooms.realestatemanager.models.ImageModel
 import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.utils.*
 import com.openclassrooms.realestatemanager.utils.Utils.configureViewModel
 import com.openclassrooms.realestatemanager.utils.Utils.showToast
-import kotlinx.android.synthetic.main.activity_property_details.*
 import kotlinx.android.synthetic.main.activity_property_management.*
 import kotlinx.android.synthetic.main.popup_add_item.view.*
 import kotlinx.coroutines.Dispatchers
@@ -39,13 +36,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import permissions.dispatcher.*
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.LinkedHashMap
 
 
 @RuntimePermissions
@@ -58,10 +48,10 @@ class PropertyManagementActivity : AppCompatActivity() {
     private var mainPhoto: String? = null
     private lateinit var storage: StorageReference
     private var adapter: PropertyImageRecyclerView? = null
-    private val listImage = ArrayList<String>()
-    private val listText = ArrayList<String>()
-    private var propertyId: String? = null
-    private val propertiesUriList = LinkedHashMap<String, String>()
+    private val imageList = ArrayList<ImageModel>()
+    private val defaultImageList = ArrayList<ImageModel>()
+    private lateinit var propertyId: String
+    private val imageListCompleted = ArrayList<ImageModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,14 +103,14 @@ class PropertyManagementActivity : AppCompatActivity() {
     private fun configureUI() {
         // RecyclerView
         recyclerView_media_property_management.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        adapter = PropertyImageRecyclerView(this, listImage, listText, true)
+        adapter = PropertyImageRecyclerView(this, imageList, true)
         recyclerView_media_property_management.adapter = adapter
 
         // Get the property id to get its data which are displayed to the user.
         // If the id is null, the user wants to create a new property,
         // nothing is happening.
         intent.getStringExtra(PROPERTY_UPDATE)?.let { propertyId ->
-            mainViewModel.getProperty(propertyId).observe(this, Observer {
+            mainViewModel.getProperty(propertyId)?.observe(this, Observer {
                 editText_surface_property_management.text = it.surfaceProperty.toString().toEditable()
                 editText_address_property_management.text = it.addressProperty.toEditable()
                 editText_type_property_management.text = it.typeProperty.toEditable()
@@ -140,11 +130,11 @@ class PropertyManagementActivity : AppCompatActivity() {
                 this.propertyId = it.propertyId
                 storage = FirebaseStorage.getInstance().getReference(it.propertyId)
 
-                Utils.deserializeArrayList(it.photosPropertyJSON)?.let { image ->
-                    listImage.addAll(image.keys)
-                    listText.addAll(image.values)
-                }
-                adapter?.notifyDataSetChanged()
+                mainViewModel.getImages(it.propertyId)?.observe(this, Observer { images ->
+                    imageList.addAll(images)
+                    defaultImageList.addAll(images)
+                    adapter?.notifyDataSetChanged()
+                })
             })
         } ?: mainViewModel.getPropertyId()?.let {
             // Initialize property Id
@@ -190,7 +180,7 @@ class PropertyManagementActivity : AppCompatActivity() {
         uploadImages()
     }
 
-    private fun createNewProperty(photosPropertyJSON: String, mainPhoto: String) {
+    private fun createNewProperty(mainPhoto: String) {
         val property = PropertyModel(surfaceProperty = editText_surface_property_management.text.toString().toInt(),
                 typeProperty = editText_type_property_management.text.toString(),
                 addressProperty = editText_address_property_management.text.toString(),
@@ -203,7 +193,7 @@ class PropertyManagementActivity : AppCompatActivity() {
                 bathroomsNumberProperty = editText_bathrooms_property_management.text.toString().toInt(),
                 descriptionProperty = editText_description_property_management.text.toString(),
                 dateProperty = Utils.todayDate,
-                photosPropertyJSON = photosPropertyJSON,
+                propertyContentProviderId = System.currentTimeMillis() / 1000,
                 realEstateAgentProperty = editText_author_property_management.text.toString(),
                 statusProperty = isAvailable(),
                 saleDateProperty = if (isAvailable()) "Not sold" else Utils.todayDate,
@@ -211,11 +201,9 @@ class PropertyManagementActivity : AppCompatActivity() {
 
         intent.getStringExtra(PROPERTY_UPDATE)?.let { _ ->
             // Update property
-            propertyId?.let { id -> mainViewModel.updateProperty(id, property, this) } ?: finish()
-        } ?: propertyId?.let {
-            // Create property
-            mainViewModel.createProperty(property, this, it)
-        }
+            mainViewModel.updateProperty(propertyId, property, this)
+        } ?: /*Create property*/ mainViewModel.createProperty(property, this, propertyId)
+
         setResult(Activity.RESULT_OK, Intent())
         finish()
     }
@@ -290,9 +278,9 @@ class PropertyManagementActivity : AppCompatActivity() {
                 }
                 filePath?.let { _ ->
                     // Add image URI for recyclerView
-                    listImage.add(filePath.toString())
-                    // Add image label for recyclerView
-                    listText.add(it.popupAddItem_Name.text.toString())
+                    imageList.add(ImageModel(imageURL = filePath.toString(),
+                            imageLabel = it.popupAddItem_Name.text.toString(),
+                            propertyId = propertyId))
                     filePath = null
                     alertDialog.dismiss()
                     adapter?.notifyDataSetChanged()
@@ -352,27 +340,30 @@ class PropertyManagementActivity : AppCompatActivity() {
                 mainImage = mainPhoto.toString()
             }
 
-            val hashMap = HashMap<String, String>()
-            for (i in 0..listImage.size) {
-                if (i < listImage.size) hashMap[listImage[i]] = listText[i]
+            for (image in imageList) {
+                if (!image.imageURL.startsWith("https://")) {
+                    val imageURL = putAndGetImage(imageListCompleted.size.toString(), image.imageURL)
+                    imageListCompleted.add(ImageModel(imageURL = imageURL,
+                            imageLabel = image.imageLabel,
+                            propertyId = propertyId))
+                } else imageListCompleted.add(ImageModel(imageURL = image.imageURL,
+                        imageLabel = image.imageLabel,
+                        propertyId = propertyId))
             }
 
-            for ((key, value) in hashMap) {
-                if (!key.startsWith("https://")) {
-                    val imageList = putAndGetImage(propertiesUriList.size.toString(), key)
-                    propertiesUriList[imageList] = value
-                } else propertiesUriList[key] = value
+            val urlList = ArrayList<String>()
+            imageListCompleted.forEach { image -> urlList.add(image.imageURL) }
+            deleteImagesFromFirebase(urlList)
+
+            defaultImageList.forEach { image ->
+                if (!imageListCompleted.contains(image)) mainViewModel.deleteImage(image.id)
             }
 
-            deleteImages(propertiesUriList)
-
-            val photosPropertyJSON = if (propertiesUriList.isEmpty()) ""
-            else Utils.serializeArrayList(propertiesUriList)
-            createNewProperty(photosPropertyJSON, mainImage)
+            createNewProperty(mainImage)
         }
     }
 
-    private suspend fun deleteImages(IMAGES: LinkedHashMap<String, String>) {
+    private suspend fun deleteImagesFromFirebase(IMAGES: ArrayList<String>) {
         var namePhotoIndex = 0
         var emptyImage = false
         var image: Uri?
