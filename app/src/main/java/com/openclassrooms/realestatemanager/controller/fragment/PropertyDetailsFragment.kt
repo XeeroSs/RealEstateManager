@@ -12,10 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PropertyImageRecyclerView
 import com.openclassrooms.realestatemanager.controller.viewmodel.MainViewModel
@@ -35,10 +33,15 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
     private val imageList = ArrayList<ImageModel>()
     private var property: PropertyModel? = null
     private lateinit var contextThis: Context
-    private var viewFragment: View? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewFragment = inflater.inflate(R.layout.property_details_content, container, false)
+        val viewFragment = inflater.inflate(R.layout.property_details_content, container, false)
+        // Get reference Map
+        mapView = viewFragment?.findViewById(R.id.liteMap_property)
+        // Initialise the MapView
+        mapView?.onCreate(null)
+        // Set the map ready callback to receive the GoogleMap object
+        mapView?.getMapAsync(this@PropertyDetailsFragment)
         return viewFragment
     }
 
@@ -62,14 +65,7 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
     }
 
     // Configure the Map
-    private fun configureMap(property: PropertyModel, view: View) {
-        mapView = view.findViewById(R.id.liteMap_property)
-        with(mapView) {
-            // Initialise the MapView
-            this?.onCreate(null)
-            // Set the map ready callback to receive the GoogleMap object
-            this?.getMapAsync(this@PropertyDetailsFragment)
-        }
+    private fun configureMap(property: PropertyModel) {
         if (!::map.isInitialized) return
         with(map) {
             val address = Utils.getLatLngFromAddress(property.cityProperty +
@@ -77,17 +73,16 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
                     property.addressProperty, contextThis)
             address?.let {
                 // Move camera on the user location
-                moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(it, 15f))
-                addMarker(com.google.android.gms.maps.model.MarkerOptions().position(it))
+                moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
+                addMarker(MarkerOptions().position(it))
             }
             // Sets the map type
             mapType = GoogleMap.MAP_TYPE_NORMAL
         }
-
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
-        MapsInitializer.initialize(context)
+        MapsInitializer.initialize(contextThis)
         // If map is not initialised properly
         this.map = googleMap ?: return
     }
@@ -112,7 +107,7 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
                 textView.text = getString(R.string.textview_propertydetails, textView.text, text)
             }
 
-            viewFragment?.let { view ->
+            view?.let { view ->
                 textViewCapacity(view.findViewById(R.id.textView_author_property), it.realEstateAgentProperty + " (Entry date: ${it.dateProperty})")
                 textViewCapacity(view.findViewById(R.id.textView_address_property), "\n${it.addressProperty}," +
                         " ${it.zipCodeProperty} ${it.cityProperty}" +
@@ -127,7 +122,7 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
                 textViewCapacity(view.findViewById(R.id.textView_type_property), it.typeProperty)
                 textViewCapacity(view.findViewById(R.id.textView_surface_property), it.surfaceProperty.toString())
 
-                configureMap(it, view)
+                configureMap(it)
                 // do stuff..
                 configureRecyclerView(view)
             }
@@ -137,11 +132,14 @@ class PropertyDetailsFragment : Fragment(), OnMapReadyCallback {
     // Configure RecyclerView
     private fun configureRecyclerView(view: View) {
         // ! PropertyId don't not is null \/ !
-        mainViewModel.getImages(propertyId!!)?.observe(this, Observer { images ->
-            imageList.addAll(images)
-        })
+
         view.findViewById<RecyclerView>(R.id.recyclerView_photos_property_fragment).layoutManager = LinearLayoutManager(contextThis, LinearLayoutManager.HORIZONTAL, false)
         adapter = PropertyImageRecyclerView(contextThis, imageList, false)
         view.findViewById<RecyclerView>(R.id.recyclerView_photos_property_fragment).adapter = adapter
+
+        mainViewModel.getImages(propertyId!!)?.observe(this, Observer { images ->
+            imageList.addAll(images)
+            adapter.notifyDataSetChanged()
+        })
     }
 }
