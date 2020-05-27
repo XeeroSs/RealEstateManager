@@ -1,13 +1,13 @@
 package com.openclassrooms.realestatemanager.database
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import android.content.Context
 import com.openclassrooms.realestatemanager.database.dao.ImageDAO
-import com.openclassrooms.realestatemanager.models.PropertyModel
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao
 import com.openclassrooms.realestatemanager.models.ImageModel
+import com.openclassrooms.realestatemanager.models.PropertyModel
 
 
 @Database(entities = [PropertyModel::class, ImageModel::class], version = 1, exportSchema = false)

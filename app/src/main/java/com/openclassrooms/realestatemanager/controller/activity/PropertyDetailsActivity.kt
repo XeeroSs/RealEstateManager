@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.controller.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -155,11 +156,14 @@ class PropertyDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     // Configure RecyclerView
     private fun configureRecyclerView() {
         // ! PropertyId don't not is null \/ !
-        mainViewModel.getImages(propertyId!!)?.observe(this, Observer { images ->
-            imageList.addAll(images)
-        })
+
         recyclerView_photos_property_fragment.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         adapter = PropertyImageRecyclerView(this, imageList, false)
         recyclerView_photos_property_fragment.adapter = adapter
+
+        mainViewModel.getImages(propertyId!!)?.observe(this, Observer { images ->
+            imageList.addAll(images)
+            adapter.notifyDataSetChanged()
+        })
     }
 }

@@ -58,7 +58,6 @@
                         android:id="@+id/imageMain_property_management"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="40dp"
                         android:scaleType="centerCrop"/>
                 </androidx.cardview.widget.CardView>
 

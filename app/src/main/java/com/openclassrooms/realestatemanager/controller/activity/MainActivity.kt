@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        supportFragmentManager.beginTransaction().commit()
+        supportFragmentManager.popBackStack()
     }
 
     // Menu icons are inflated just as they were with actionbar

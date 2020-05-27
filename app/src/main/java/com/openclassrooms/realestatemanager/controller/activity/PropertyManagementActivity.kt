@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -179,7 +180,7 @@ class PropertyManagementActivity : AppCompatActivity() {
         uploadImages()
     }
 
-    private fun createNewProperty(mainPhoto: String) {
+    private fun createNewProperty(mainPhoto: String, IMAGES: ArrayList<ImageModel>) {
         val property = PropertyModel(surfaceProperty = editText_surface_property_management.text.toString().toInt(),
                 typeProperty = editText_type_property_management.text.toString(),
                 addressProperty = editText_address_property_management.text.toString(),
@@ -200,8 +201,8 @@ class PropertyManagementActivity : AppCompatActivity() {
 
         intent.getStringExtra(PROPERTY_UPDATE)?.let { _ ->
             // Update property
-            mainViewModel.updateProperty(propertyId, property, this)
-        } ?: /*Create property*/ mainViewModel.createProperty(property, this, propertyId)
+            mainViewModel.updateProperty(propertyId, property, this, IMAGES)
+        } ?: /*Create property*/mainViewModel.createProperty(property, this, propertyId, IMAGES)
 
         setResult(Activity.RESULT_OK, Intent())
         finish()
@@ -279,7 +280,7 @@ class PropertyManagementActivity : AppCompatActivity() {
                     // Add image URI for recyclerView
                     imageList.add(ImageModel(imageURL = filePath.toString(),
                             imageLabel = it.popupAddItem_Name.text.toString(),
-                            propertyId = propertyId))
+                            imageId = propertyId))
                     filePath = null
                     alertDialog.dismiss()
                     adapter?.notifyDataSetChanged()
@@ -344,21 +345,20 @@ class PropertyManagementActivity : AppCompatActivity() {
                     val imageURL = putAndGetImage(imageListCompleted.size.toString(), image.imageURL)
                     imageListCompleted.add(ImageModel(imageURL = imageURL,
                             imageLabel = image.imageLabel,
-                            propertyId = propertyId))
+                            imageId = propertyId))
                 } else imageListCompleted.add(ImageModel(imageURL = image.imageURL,
                         imageLabel = image.imageLabel,
-                        propertyId = propertyId))
+                        imageId = propertyId))
             }
 
             val urlList = ArrayList<String>()
             imageListCompleted.forEach { image -> urlList.add(image.imageURL) }
             deleteImagesFromFirebase(urlList)
 
-            defaultImageList.forEach { image ->
-                if (!imageListCompleted.contains(image)) mainViewModel.deleteImage(image.id)
-            }
-
-            createNewProperty(mainImage)
+            /*    defaultImageList.forEach { image ->
+                    if (!imageListCompleted.contains(image)) mainViewModel.deleteImage(image.id)
+                }*/
+            createNewProperty(mainImage, imageListCompleted)
         }
     }
 
